@@ -1,0 +1,93 @@
+@import url(https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css);
+@import url(https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css);
+
+html, body {
+  height: 100%;
+  font-size: 14px
+}
+
+body {
+  margin: 0;
+  background-color: #f9f9f9;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+}
+
+.os-container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-right: 15px;
+  padding-left: 15px
+}
+
+.os-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/*.cart-btn {*/
+/*  outline: none;*/
+/*  border: none;*/
+/*  min-width: 120px;*/
+/*  height: 36px;*/
+/*  color: #fff;*/
+/*  background: var(--primary-bg);*/
+/*  border-radius: 3px;*/
+/*}*/
+
+.cart-btn .bi {
+  font-size: 1.2rem;
+}
+
+.cart-count.hidden {
+  display: none;
+}
+
+/*.os-logo-text {*/
+/*  display: inline-block;*/
+/*  font-weight: 600;*/
+/*  font-size: 2.5rem;*/
+/*  color: var(--primary-bg);*/
+/*}*/
+
+.os-products {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-gap: 20px;
+}
+
+.os-products-footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px
+}
+
+.os-btn-primary,
+.os-btn-default {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  font-size: .875rem;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: .3s
+}
+
+.os-btn-primary {
+  background-color: var(--primary-bg);
+  color: #fff
+}
+
+.os-btn-default:hover {
+  background-color: #e3e3e3;
+}

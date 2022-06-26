@@ -1,0 +1,36 @@
+.modal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  position: fixed;
+  z-index: 100;
+  background: rgba(0,0,0, 0.4); /* Fallback color */
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal__content {
+  position: fixed;
+  overflow-y: scroll;
+  width: calc(100% - 80px);
+  height: calc(100% - 80px);
+  background-color: #fefefe;
+  z-index: 200;
+}
+
+.close-header {
+  height: 40px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.close-header .bi {
+  padding: 0 20px;
+  cursor: pointer;
+}

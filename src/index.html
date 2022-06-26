@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>VanilaJS Online Store</title>
+
+  <link rel="stylesheet" href="./styles/variables.css">
+  <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/card-style.css">
+  <link rel="stylesheet" href="./styles/cart-style.css">
+  <link rel="stylesheet" href="./styles/modal-style.css">
+  <link rel="stylesheet" href="./styles/side-bar-style.css">
+  <link rel="stylesheet" href="./styles/card-list-style.css">
+  <link rel="stylesheet" href="./styles/pagination-style.css">
+  <link rel="stylesheet" href="./styles/search-style.css">
+
+</head>
+
+<body>
+
+
+  <div class="os-container">
+    <header class="os-header">
+<!--      <button class="cart os-btn-primary" data-element="cartBtn">-->
+<!--        <i class="bi bi-cart"></i>-->
+<!--        &lt;!&ndash;<i class="bi bi-cart-plus"></i>&ndash;&gt;-->
+<!--        Cart <span class="hidden cart-count" data-element="cartCounter">0</span>-->
+<!--      </button>-->
+    </header>
+    <main class="os-products">
+
+      <!-- SideBar -->
+      <aside class="sidebar">
+        <h2 class="sidebar__title"><a href="/">Online Store</a></h2>
+        <ul class="sidebar__nav">
+          <li class="active">
+            <a href="/" data-page="dashboard">
+              <i class="icon-dashboard"></i>
+              <span>Products</span>
+            </a>
+          </li>
+          <li>
+            <a href="/wishlist" data-page="products">
+              <i class="icon-products"></i>
+              <span>Wishlist</span>
+            </a>
+          </li>
+          <li>
+            <a href="/cart" data-page="products">
+              <i class="icon-products"></i>
+              <span>Cart</span>
+            </a>
+          </li>
+        </ul>
+<!--        <ul class="sidebar__nav sidebar__nav_bottom">-->
+<!--          <li>-->
+<!--            <button type="button" class="sidebar__toggler">-->
+<!--              <i class="icon-toggle-sidebar"></i>-->
+<!--              <span>Скрыть панель</span>-->
+<!--            </button>-->
+<!--          </li>-->
+<!--        </ul>-->
+      </aside>
+
+      <section>
+        <div data-element="search">
+          <!-- Search -->
+          <form>
+            <div class="os-form-input use-icon">
+              <input id="search-input" type="text" data-element="search" placeholder="Search">
+              <label class="bi bi-search input-icon" for="search-input"></label>
+            </div>
+          </form>
+        </div>
+
+        <div id="root" class=""></div>
+      </section>
+    </main>
+  </div>
+
+
+
+<script type="module">
+  import OnlineStorePage from './pages/main/index.js';
+
+  const page = new OnlineStorePage();
+  const root = document.querySelector('#root');
+
+  root.append(page.element);
+</script>
+</body>
+</html>

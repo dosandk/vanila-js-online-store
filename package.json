@@ -1,0 +1,40 @@
+{
+  "name": "vanila-js-online-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:jest": "cross-env NODE_ICU_DATA=node_modules/full-icu jest",
+    "test:editorconfig": "editorconfig-checker --exclude '.git|.husky|node_modules'",
+    "test:eslint": "eslint src/**/*.js --config .eslintrc.js",
+    "pre-commit": "lint-staged",
+    "pre-push": "npm run test:jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.18.2",
+    "@testing-library/jest-dom": "^5.16.4",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^28.1.1",
+    "cross-env": "^7.0.3",
+    "editorconfig-checker": "^4.0.2",
+    "eslint": "^8.18.0",
+    "full-icu": "^1.4.0",
+    "husky": "^8.0.1",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
+    "jest-fetch-mock": "^3.0.3",
+    "lint-staged": "^13.0.3"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run test:eslint",
+      "npm run test:editorconfig"
+    ]
+  }
+}
