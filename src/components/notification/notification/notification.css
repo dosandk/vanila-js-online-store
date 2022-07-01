@@ -1,0 +1,71 @@
+.notification {
+  width: 200px;
+  margin: 10px 5px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .5);
+  animation: calc((var(--value)) * 0.1) ease-out calc((var(--value)) * 0.9) fadeOut;
+  z-index: 1000;
+  background: #192a3e;
+  border-radius: 4px;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Success */
+.notification.success .notification-body .bi {
+  color: #2ED47A;
+}
+
+.notification.success .timer {
+  background: #2ED47A;
+}
+
+/* Error */
+.notification.error .notification-body .bi {
+  color: #f7685b;
+}
+
+/* Info */
+.notification.info .notification-body .bi {
+  color: #4ceff8;
+}
+
+.notification.info .timer {
+  background: #4ceff8;
+}
+
+.inner-wrapper {
+  padding: 15px;
+  position: relative;
+}
+
+.timer {
+  width: 100%;
+  height: 3px;
+  animation: progress var(--value) linear;
+}
+
+.close-btn {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 0;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}

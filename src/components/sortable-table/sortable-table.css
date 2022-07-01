@@ -1,0 +1,39 @@
+.sortable-table-header tr th[data-sortable="true"] {
+  cursor: pointer;
+}
+
+.sortable-table-image {
+  height: 80px;
+  max-width: 100%;
+  padding: 4px;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+}
+
+tr th[data-sortable="true"]::before,
+tr th[data-sortable="true"]::after {
+  right: 1em;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 1rem;
+  position: absolute;
+  bottom: .5em;
+  display: block;
+  opacity: .3
+}
+
+tr th[data-sortable="true"]::before {
+  content: "\f0de";
+}
+
+tr th[data-sortable="true"]::after {
+  content: "\f0dd";
+}
+
+tr th[data-sortable="true"][data-order='asc']::before {
+  opacity: 1
+}
+
+tr th[data-sortable="true"][data-order='desc']::after {
+  opacity: 1
+}

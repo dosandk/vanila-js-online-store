@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "develop": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
     "test:jest": "cross-env NODE_ICU_DATA=node_modules/full-icu jest",
     "test:editorconfig": "editorconfig-checker --exclude '.git|.husky|node_modules'",
     "test:eslint": "eslint src/**/*.js --config .eslintrc.js",
@@ -21,15 +22,27 @@
     "@testing-library/jest-dom": "^5.16.4",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^28.1.1",
+    "babel-loader": "^8.2.5",
     "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "dotenv": "^16.0.1",
     "editorconfig-checker": "^4.0.2",
     "eslint": "^8.18.0",
+    "file-loader": "^6.2.0",
     "full-icu": "^1.4.0",
+    "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.1",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
     "jest-fetch-mock": "^3.0.3",
-    "lint-staged": "^13.0.3"
+    "lint-staged": "^13.0.3",
+    "mini-css-extract-plugin": "^2.6.1",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.3",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.2",
+    "webpack-merge": "^5.8.0"
   },
   "lint-staged": {
     "*.js": [

@@ -1,5 +1,7 @@
 import {debounce} from './debounce.js';
 
+import './search.css';
+
 export default class Search {
   element;
   subElements = {};
@@ -32,7 +34,7 @@ export default class Search {
             for="search-input"></label>
         </div>
       </form>
-    `
+    `;
   }
 
   render() {
@@ -59,12 +61,12 @@ export default class Search {
   dispatchEvent(searchString) {
     this.element.dispatchEvent(new CustomEvent('search-filter', {
       bubbles: true,
-      detail: searchString
+      payload: searchString
     }));
   }
 
   addEventListeners() {
-    this.subElements.search.addEventListener('input', this.onKeyUp)
+    this.subElements.search.addEventListener('input', this.onKeyUp);
   }
 
   clear() {

@@ -1,0 +1,9 @@
+.list-view-controls {
+  font-size: 18px;
+  padding: 10px 0;
+  text-align: right;
+}
+
+.list-view-controls .bi {
+  cursor: pointer;
+}

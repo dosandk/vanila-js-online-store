@@ -1,5 +1,7 @@
 import Card from '../card/index.js';
 
+import './card-list.css';
+
 export default class CardsList {
   constructor (data = []) {
     this.data = data;
@@ -26,12 +28,7 @@ export default class CardsList {
   }
 
   renderCards () {
-    const cards = this.data.map(item => {
-      const card = new Card(item);
-
-      return card.element;
-    });
-
+    const cards = this.getCardsList(this.data);
     const body = this.element.querySelector('[data-element="body"]');
 
     body.innerHTML = '';
@@ -42,5 +39,28 @@ export default class CardsList {
     this.data = data;
 
     this.renderCards();
+  }
+
+  getCardsList (data = []) {
+    return data.map(item => {
+      const card = new Card(item);
+
+      return card.element;
+    });
+  }
+
+  add (data) {
+    this.data = [...this.data, ...data];
+
+    const body = this.element.querySelector('[data-element="body"]');
+    const cards = this.getCardsList(data);
+
+    body.append(...cards);
+  }
+
+  remove () {
+    if (this.element) {
+      this.element.remove();
+    }
   }
 }

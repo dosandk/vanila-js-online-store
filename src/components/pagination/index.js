@@ -1,10 +1,18 @@
-export default class Pagination {
-  constructor({
-    activePageIndex = 0,
-    totalPages = 0
-  } = {}) {
+import connectToObserver from '../../core/observer/connect.js';
+
+import './pagination.css';
+
+class Pagination {
+  constructor(
+    {
+      activePageIndex = 0,
+      totalPages = 0
+    } = {},
+    observer
+  ) {
     this.activePageIndex = activePageIndex;
     this.totalPages = totalPages;
+    this.observer = observer;
 
     this.render();
     this.addEventListeners();
@@ -12,39 +20,39 @@ export default class Pagination {
 
   getTemplate() {
     return `
-        <nav class="os-pagination">
-          <a href="#" class="page-link previous" data-element="nav-prev">
-            <i class="bi bi-chevron-left"></i>
-          </a>
-          ${this.getPages()}
-          <a href="#" class="page-link next" data-element="nav-next">
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        </nav>
-      `;
+      <nav class="os-pagination">
+        <a href="#" class="page-link previous" data-element="nav-prev">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+        ${this.getPages()}
+        <a href="#" class="page-link next" data-element="nav-next">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      </nav>
+    `;
   }
 
   getPages() {
     return `
-        <ul class="page-list" data-element="pagination">
-          ${new Array(this.totalPages).fill(1).map((item, index) => {
-      return this.getPageTemplate(index);
-    }).join('')}
-        </ul>
-      `;
+      <ul class="page-list" data-element="pagination">
+        ${new Array(this.totalPages).fill(1).map((item, index) => {
+          return this.getPageTemplate(index);
+        }).join('')}
+      </ul>
+    `;
   }
 
   getPageTemplate(pageIndex = 0) {
     const isActive = pageIndex === this.activePageIndex ? 'active' : '';
 
     return `<li>
-        <a href="#"
-          data-element="page-link"
-          class="page-link ${isActive}"
-          data-page-index="${pageIndex}">
-          ${pageIndex + 1}
-        </a>
-      </li>`;
+      <a href="#"
+        data-element="page-link"
+        class="page-link ${isActive}"
+        data-page-index="${pageIndex}">
+        ${pageIndex + 1}
+      </a>
+    </li>`;
   }
 
   setPage(pageIndex = 0) {
@@ -93,15 +101,21 @@ export default class Pagination {
     const nextPageBtn = this.element.querySelector('[data-element="nav-next"]');
     const pagesList = this.element.querySelector('[data-element="pagination"]');
 
-    prevPageBtn.addEventListener('click', () => {
+    prevPageBtn.addEventListener('click', event => {
+      event.preventDefault();
+
       this.prevPage();
     });
 
-    nextPageBtn.addEventListener('click', () => {
+    nextPageBtn.addEventListener('click', event => {
+      event.preventDefault();
+
       this.nextPage();
     });
 
     pagesList.addEventListener('click', event => {
+      event.preventDefault();
+
       const pageItem = event.target.closest('.page-link');
 
       if (!pageItem) return;
@@ -113,10 +127,11 @@ export default class Pagination {
   }
 
   dispatchEvent(pageIndex) {
-    const customEvent = new CustomEvent('page-changed', {
-      detail: pageIndex
+    this.observer.dispatchEvent({
+      type: 'page-changed',
+      payload: pageIndex
     });
-
-    this.element.dispatchEvent(customEvent);
   }
 }
+
+export default connectToObserver(Pagination);

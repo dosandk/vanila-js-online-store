@@ -1,0 +1,12 @@
+.error404 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 100px 20px 0;
+}
+
+.error404-title {
+  font-size: 9rem;
+  color: darkgreen;
+}
