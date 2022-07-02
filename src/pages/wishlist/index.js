@@ -88,8 +88,15 @@ class WishListPage {
     this.components.list.update(products);
   }
 
+  // NOTE: Pattern. Facade
+  registerEvent (type, callback) {
+    const handler = this.observer.subscribe('page-changed', callback);
+
+    this.subscriptions.push(handler);
+  }
+
   initEventListeners () {
-    const pageChangedHandler = this.observer.subscribe('page-changed', event => {
+    this.registerEvent('page-changed', event => {
       console.error('event', event);
 
       const pageIndex = event.payload;
@@ -98,8 +105,6 @@ class WishListPage {
 
       this.notificationManager.show('Page has changed', 'success');
     });
-
-    this.subscriptions.push(pageChangedHandler);
   }
 
   remove () {
@@ -117,10 +122,7 @@ class WishListPage {
       }
     }
 
-    for (const unsubscribe of this.subscriptions) {
-      unsubscribe();
-    }
-
+    this.subscriptions = [];
     this.element = null;
     this.components = null;
     this.subElements = null;

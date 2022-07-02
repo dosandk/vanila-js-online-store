@@ -9,6 +9,16 @@ const connectToStore = Component => class extends Component {
 
     super(...props);
   }
+
+  destroy () {
+    if (this.subscriptions?.length) {
+      for (const unsubscribe of this.subscriptions) {
+        unsubscribe();
+      }
+    }
+
+    super.destroy();
+  }
 };
 
 export default connectToStore;

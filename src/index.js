@@ -1,45 +1,92 @@
-import Router from './router/index.js';
+import Router from './core/router/index.js';
+import Link from './core/router/link.js';
 import Store from './core/store/index.js';
 import reducers from './reducers/index.js';
 
+const navigationConfig = [
+  {
+    url: '/',
+    html: `<i class="bi bi-shop"></i><span>Products</span>`,
+    attributes: {
+      class: 'link-unstyled'
+    }
+  },
+  {
+    url: '/wishlist',
+    html: `<i class="bi bi-star"></i><span>Wishlist</span>`,
+    attributes: {
+      class: 'link-unstyled'
+    }
+  },
+  {
+    url: '/cart',
+    html: `<i class="bi bi-cart"></i> <span>Cart</span>`,
+    attributes: {
+      class: 'link-unstyled'
+    }
+  }
+];
+
 class App {
+  subElements = {};
+
   constructor() {
     this.router = Router.instance;
     this.render();
+    this.getSubElements();
+    this.renderTitle();
+    this.renderNavigationLinks();
+
+    this.initEventListeners();
+  }
+
+  renderTitle () {
+    const link = new Link({
+      url: '/',
+      html: 'Online Store',
+      attributes: {
+        class: 'link-unstyled'
+      }
+    });
+
+    this.subElements.title.append(link.element);
+  }
+
+  renderNavigationLinks () {
+    const links = navigationConfig.map(linkProps => {
+      const { url, html, attributes } = linkProps;
+
+      const isActive = `/${this.router.strippedPath}` === url;
+      const li = document.createElement('li');
+
+      const link = new Link({ url, html, attributes }).element;
+
+      if (isActive) {
+        link.classList.add(Link.activeClassName);
+      }
+
+      li.append(link);
+
+      return li;
+    });
+
+    this.subElements.navigation.append(...links);
   }
 
   get template() {
     return `<div class="os-container">
       <main class="os-products">
-        <!-- SideBar -->
         <aside class="sidebar">
-          <h2 class="sidebar__title">
-            <a class="link-unstyled" href="/">Online Store</a>
+          <h2 class="sidebar__title" data-element="title">
+            <!-- Title -->
           </h2>
-          <ul class="sidebar__nav">
-            <li class="active">
-              <a class="link-unstyled" href="/" data-page="products">
-                <i class="bi bi-shop"></i>
-                <span>Products</span>
-              </a>
-            </li>
-            <li>
-              <a class="link-unstyled" href="/wishlist" data-page="wishlist">
-                <i class="bi bi-star"></i>
-                <span>Wishlist</span>
-              </a>
-            </li>
-            <li>
-              <a class="link-unstyled" href="/cart" data-page="cart">
-                <i class="bi bi-cart"></i>
-                <span>Cart</span>
-              </a>
-            </li>
+          <ul class="sidebar__nav" data-element="navigation">
+            <!-- Navigation -->
           </ul>
         </aside>
 
         <section id="page-content">
-
+          <!-- Page content -->
         </section>
       </main>
     </div>`;
@@ -53,6 +100,19 @@ class App {
     this.element = element.firstElementChild;
   }
 
+  getSubElements() {
+    const result = {};
+    const elements = this.element.querySelectorAll('[data-element]');
+
+    for (const subElement of elements) {
+      const name = subElement.dataset.element;
+
+      result[name] = subElement;
+    }
+
+    this.subElements = result;
+  }
+
   initializeRouter() {
     this.router
       .addRoute(/^$/, 'main')
@@ -60,6 +120,22 @@ class App {
       .addRoute(/^wishlist$/, 'wishlist')
       .addRoute(/404\/?$/, 'error404')
       .listen();
+  }
+
+  initEventListeners () {
+    this.subElements.navigation.addEventListener('pointerdown', event => {
+      const link = event.target.closest('a');
+
+      if (link) {
+        const otherLinks = event.currentTarget.querySelectorAll('a');
+
+        for (const otherLink of otherLinks) {
+          otherLink.classList.remove(Link.activeClassName);
+        }
+
+        link.classList.add(Link.activeClassName);
+      }
+    });
   }
 }
 

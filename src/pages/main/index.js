@@ -207,10 +207,6 @@ class OnlineStorePage {
       }
     }
 
-    for (const unsubscribe of this.subscriptions) {
-      unsubscribe();
-    }
-
     this.subscriptions = [];
   }
 }

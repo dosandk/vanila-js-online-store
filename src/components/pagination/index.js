@@ -20,7 +20,7 @@ class Pagination {
 
   getTemplate() {
     return `
-      <nav class="os-pagination">
+      <nav class="os-pagination" hidden>
         <a href="#" class="page-link previous" data-element="nav-prev">
           <i class="bi bi-chevron-left"></i>
         </a>
@@ -94,6 +94,10 @@ class Pagination {
     wrapper.innerHTML = this.getTemplate();
 
     this.element = wrapper.firstElementChild;
+
+    if (this.totalPages) {
+      this.element.removeAttribute('hidden');
+    }
   }
 
   addEventListeners() {
