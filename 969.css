@@ -1,0 +1,249 @@
+.os-pagination {
+  display: flex;
+  align-items: center;
+}
+
+.os-pagination a {
+  line-height: 1;
+  text-decoration: none
+}
+
+.os-pagination .previous,
+.os-pagination .next {
+  color: #000
+}
+
+.os-pagination .previous {
+  margin-right: 15px
+}
+
+.os-pagination .next {
+  margin-left: 15px
+}
+
+.os-pagination .page-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 20px
+}
+
+.os-pagination .page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #ededed;
+  border-radius: 20px;
+  color: #2c2c2c;
+  transition: .3s
+}
+
+.os-pagination .page-link:hover,
+.os-pagination .page-link.active {
+  background-color: var(--primary-bg);
+  color: #fff
+}
+
+.notification {
+  width: 200px;
+  margin: 10px 5px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .5);
+  animation: calc((var(--value)) * 0.1) ease-out calc((var(--value)) * 0.9) fadeOut;
+  z-index: 1000;
+  background: #192a3e;
+  border-radius: 4px;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Success */
+.notification.success .notification-body .bi {
+  color: #2ED47A;
+}
+
+.notification.success .timer {
+  background: #2ED47A;
+}
+
+/* Error */
+.notification.error .notification-body .bi {
+  color: #f7685b;
+}
+
+/* Info */
+.notification.info .notification-body .bi {
+  color: #4ceff8;
+}
+
+.notification.info .timer {
+  background: #4ceff8;
+}
+
+.inner-wrapper {
+  padding: 15px;
+  position: relative;
+}
+
+.timer {
+  width: 100%;
+  height: 3px;
+  animation: progress var(--value) linear;
+}
+
+.close-btn {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 0;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
+.notifications-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.os-product-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  display: grid;
+  align-content: space-between;
+  grid-template-rows: 0.5fr 0.5fr 40px;
+}
+
+.os-product-img {
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  margin: 12px 12px 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center
+}
+
+.os-product-content {
+  padding: 22px 24px
+}
+
+.os-product-price-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px
+}
+
+.os-product-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  max-width: 70px;
+  padding: 6px 12px;
+  border-radius: 3px;
+  background-color: var(--primary-bg);
+  color: #fff;
+  font-size: .875rem;
+  font-weight: 400
+}
+
+.os-product-price-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px
+}
+
+.os-product-price {
+  color: #2c2c2c;
+  font-size: 1.125rem;
+  font-weight: 400
+}
+
+.os-product-title,
+.os-product-description {
+  margin: 0;
+  font-weight: normal;
+  color: #2c2c2c
+}
+
+.os-product-title {
+  font-size: 1rem;
+  margin-bottom: 8px
+}
+
+.os-product-description {
+  font-size: 0.75rem
+}
+
+.os-product-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.os-product-footer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0
+}
+
+.os-product-footer button i {
+  margin-right: 3px;
+}
+
+.add-to-wishlist-btn .bi-heart-fill {
+  display: none;
+}
+
+.add-to-cart-btn .bi-cart-check-fill {
+  display: none;
+}
+
+.add-to-wishlist-btn.active .bi-heart {
+  display: none;
+}
+
+.add-to-cart-btn.active .bi-cart {
+  display: none;
+}
+
+.add-to-wishlist-btn.active .bi-heart-fill {
+  display: inline-block;
+}
+
+.add-to-cart-btn.active .bi-cart-check-fill {
+  display: inline-block;
+}
+
+.os-products-list {
+  display: grid;
+  grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
+  margin: 20px 0;
+}
+
