@@ -7,3 +7,21 @@
 .list-view-controls .bi {
   cursor: pointer;
 }
+
+.products-page {
+  padding-top: 25px;
+}
+
+.filters-panel {
+  grid-template-columns: 3fr 2fr 1fr;
+  grid-gap: 20px;
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 13%);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}

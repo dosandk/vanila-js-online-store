@@ -1,3 +1,4 @@
+// NOTE: Pattern. Decorator
 export const debounce = (fn, delay = 0) => {
   let timerId
 

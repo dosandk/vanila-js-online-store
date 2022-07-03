@@ -16,9 +16,9 @@ class WishListPage {
     this.store = store;
     this.observer = observer;
 
-    const { products } = this.store.getState();
+    const { wishlist } = this.store.getState();
 
-    this.products = products;
+    this.products = wishlist;
 
     this.initialize();
   }
@@ -33,13 +33,15 @@ class WishListPage {
 
   getTemplate () {
     return `
-      <div>
+      <div class="page-container">
+        <h1 class="page-title">WishList</h1>
         <div data-element="list">
           <!-- Cards List component -->
         </div>
         <div data-element="pagination" class="os-products-footer">
           <!-- Pagination component -->
         </div>
+        <div data-element="emptyData">There is no data in the wishlist</div>
       </div>
     `;
   }
@@ -77,6 +79,10 @@ class WishListPage {
     this.element = wrapper.firstElementChild;
 
     this.subElements = getSubElements(this.element);
+
+    if (this.products.length) {
+      this.subElements.emptyData.setAttribute('hidden', true);
+    }
   }
 
   update(pageIndex) {
@@ -89,18 +95,26 @@ class WishListPage {
   }
 
   // NOTE: Pattern. Facade
-  registerEvent (type, callback) {
-    const handler = this.observer.subscribe('page-changed', callback);
+  registerObserverEvent (type, callback) {
+    const handler = this.observer.subscribe(type, callback);
+
+    this.subscriptions.push(handler);
+  }
+
+  registerStoreEvent (type, callback) {
+    const handler = this.store.subscribe(type, callback);
 
     this.subscriptions.push(handler);
   }
 
   initEventListeners () {
-    this.registerEvent('page-changed', event => {
-      console.error('event', event);
+    this.registerObserverEvent('page-changed', pageIndex => {
+      this.update(pageIndex);
 
-      const pageIndex = event.payload;
+      this.notificationManager.show('Page has changed', 'success');
+    });
 
+    this.registerStoreEvent('page-changed', pageIndex => {
       this.update(pageIndex);
 
       this.notificationManager.show('Page has changed', 'success');

@@ -2,6 +2,7 @@ import {createElement, getSubElements} from '../../core/dom/index.js';
 import connectToObserver from "../../core/observer/connect.js";
 import connectToStore from "../../core/store/connect.js";
 import { addProduct } from '../../reducers/products.js';
+import { addToWishList as addToWishListAction } from '../../reducers/wishlist.js';
 
 import './card.css';
 
@@ -44,14 +45,16 @@ class Card {
 
   get footer() {
     return `<footer class="os-product-footer">
-      <button class="os-btn-default" data-element="addToWishlist">
+      <button class="os-btn-default add-to-wishlist-btn" data-element="addToWishlist">
         <i class="bi bi-heart"></i>
+        <i class="bi bi-heart-fill"></i>
         Wishlist
       </button>
 
-      <button class="os-btn-primary" data-element="addToCart">
-        <i class="bi bi-box-seam"></i>
-        Add To Cart
+      <button class="os-btn-primary add-to-cart-btn" data-element="addToCart">
+        <i class="bi bi-cart"></i>
+        <i class="bi bi-cart-check-fill"></i>
+        Cart
       </button>
     </footer>`;
   }
@@ -59,17 +62,31 @@ class Card {
   initEventListeners() {
     const {addToWishlist, addToCart} = this.subElements;
 
-    addToWishlist.addEventListener('pointerdown', () => {
-      // TODO: implement saving in browser storage
+    addToWishlist.addEventListener('pointerdown', event => {
+      const status = event.currentTarget.classList.toggle('active');
+
+      this.dispatchEvent('add-to-wishlist', {
+        product: this.product,
+        status
+      });
+
+      this.store.dispatch(addToWishListAction(this.product));
     });
 
-    addToCart.addEventListener('pointerdown', () => {
+    addToCart.addEventListener('pointerdown', event => {
+      const status = event.currentTarget.classList.toggle('active');
+
+      this.dispatchEvent('add-to-wishlist', {
+        product: this.product,
+        status
+      });
+
       this.store.dispatch(addProduct(this.product));
     });
   }
 
-  dispatchEvent(type = '') {
-    this.observer.dispatchEvent({type});
+  dispatchEvent(type = '', payload = {}) {
+    this.observer.dispatchEvent({type, payload});
   }
 
   update(product = {}) {

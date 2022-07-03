@@ -1,18 +1,22 @@
 import { getSubElements } from '../../core/dom/index.js';
 import connectToStore from '../../core/store/connect.js';
-import sortableTableHeaderConfig from './sortable-table-wishlist-header.js';
-import SortableTable from "../../components/sortable-table/index.js";
-import InfinityList from "../../components/infinity-list/index.js";
-import NotificationManager from "../../components/notification/notification-manager";
+import Cart from '../../components/cart';
+import connectToObserver from '../../core/observer/connect';
+
+import './cart.css';
 
 class CartPage {
   subElements = {};
   components = {};
   subscriptions = [];
 
-  constructor (match, observer) {
+  constructor (match, store, observer) {
+    this.store = store;
     this.observer = observer;
 
+    const { products } = this.store.getState();
+
+    this.products = products;
     this.initialize();
   }
 
@@ -21,36 +25,38 @@ class CartPage {
     this.initComponents();
     this.render();
     this.renderComponents();
-    this.initEventListeners();
   }
 
   getTemplate () {
     return `
-      <div>
-        <h1>This is Cart Page</h1>
-        <div data-element="list">
-
+      <div class="page-container">
+        <h1 class="page-title">Cart</h1>
+        <div data-element="cart">
+          <!-- Cart component -->
         </div>
       </div>
     `;
   }
 
   initComponents () {
-    const sortableTable = new SortableTable(sortableTableHeaderConfig, {
-      data: []
-    });
+    const cart = new Cart();
 
-    const list = new InfinityList(sortableTable, { step: this.step });
-
-    this.notificationManager = new NotificationManager();
+    for (const item of this.products) {
+      cart.add(item);
+    }
 
     this.components = {
-      list
+      cart
     };
   }
 
   renderComponents () {
+    for (const componentName of Object.keys(this.components)) {
+      const root = this.subElements[componentName];
+      const { element } = this.components[componentName];
 
+      root.append(element);
+    }
   }
 
   render () {
@@ -61,10 +67,6 @@ class CartPage {
     this.element = wrapper.firstElementChild;
 
     this.subElements = getSubElements(this.element);
-  }
-
-  initEventListeners () {
-
   }
 
   remove () {
@@ -93,4 +95,4 @@ class CartPage {
 }
 
 // NOTE: Pattern. Decorator
-export default connectToStore(CartPage);
+export default connectToStore(connectToObserver(CartPage));

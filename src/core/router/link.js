@@ -6,6 +6,8 @@ export default class Link {
   onPopState = () => {
     if (`/${this.router.strippedPath}` === this.url) {
       this.element.classList.add(Link.activeClassName);
+    } else {
+      this.element.classList.remove(Link.activeClassName);
     }
   }
 

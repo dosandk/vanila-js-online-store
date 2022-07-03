@@ -33,14 +33,21 @@ export default class Store {
   dispatch (action = {}) {
     const { type, payload } = action;
 
+    console.error('action', action);
+
     for (const reducerName of Object.keys(this.reducers)) {
       const reducerMethod = this.reducers[reducerName][type];
 
       if (reducerMethod) {
         const state = this.getState(reducerName);
+
+        console.error('current state', state);
+
         const nextValue = reducerMethod(state, payload);
 
         this.setState(reducerName, nextValue);
+
+        console.error('next state', this.getState());
 
         const listeners = this.listeners[type];
 

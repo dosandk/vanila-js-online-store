@@ -1,18 +1,22 @@
 import {debounce} from './debounce.js';
+import connectToObserver from '../../core/observer/connect.js';
 
 import './search.css';
 
-export default class Search {
+class Search {
   element;
   subElements = {};
+  delay = 300;
 
   onKeyUp = debounce(event => {
     const title = event.target.value.trim();
 
     this.dispatchEvent(title);
-  }, 300);
+  }, this.delay);
 
-  constructor() {
+  constructor(observer) {
+    this.observer = observer;
+
     this.initialize();
   }
 
@@ -58,11 +62,11 @@ export default class Search {
     this.subElements = result;
   }
 
-  dispatchEvent(searchString) {
-    this.element.dispatchEvent(new CustomEvent('search-filter', {
-      bubbles: true,
+  dispatchEvent(searchString = '') {
+    this.observer.dispatchEvent({
+      type: 'search-filter',
       payload: searchString
-    }));
+    });
   }
 
   addEventListeners() {
@@ -85,3 +89,5 @@ export default class Search {
     this.subElements = {};
   }
 }
+
+export default connectToObserver(Search);

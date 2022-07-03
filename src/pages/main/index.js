@@ -8,9 +8,12 @@ import httpRequest from '../../core/request/index.js';
 import connectToObserver from "../../core/observer/connect.js";
 import connectToStore from "../../core/store/connect.js";
 
-const BACKEND_URL = `${process.env.BACKEND_URL}api/rest/`;
+import RequestBuilder from '../../api/index.js';
 
 import './main.css';
+
+// NOTE: temporary commented
+// import DoubleSlider from "../../components/double-slider";
 
 class OnlineStorePage {
   subscriptions = [];
@@ -18,11 +21,12 @@ class OnlineStorePage {
   components = {};
   pageSize = 10;
   products = [];
-  url = new URL('products', BACKEND_URL);
 
   constructor(match, store, observer) {
     this.store = store;
     this.observer = observer;
+
+    this.url = new RequestBuilder('products');
 
     this.initComponents();
     this.render();
@@ -33,27 +37,33 @@ class OnlineStorePage {
     const start = 1;
     const end = start + this.pageSize;
 
+    this.url.addPagination(start, end);
+
     this.add(start, end);
   }
 
-  async loadData(start, end) {
-    this.url.searchParams.set('_start', start);
-    this.url.searchParams.set('_end', end);
-
+  async loadData() {
     return await httpRequest.get(this.url);
   }
 
   getTemplate() {
     return `
-      <div>
-        <div data-element="search">
-          <!-- Search component -->
+      <div class="page-container">
+        <h1 class="page-title">Products</h1>
+
+        <div class="filters-panel">
+          <div data-element="search">
+            <!-- Search component -->
+          </div>
+          <div data-element="doubleSlider">
+            <!-- DoubleSlider component -->
+          </div>
+          <div class="list-view-controls">
+            <i class="bi bi-list" data-element="listBtn"></i>
+            <i class="bi bi-grid" data-element="gridBtn"></i>
+          </div>
         </div>
 
-        <div class="list-view-controls">
-          <i class="bi bi-list" data-element="listBtn"></i>
-          <i class="bi bi-grid" data-element="gridBtn"></i>
-        </div>
 
         <div data-element="list">
           <!-- Cards List component -->
@@ -66,12 +76,20 @@ class OnlineStorePage {
     const cardsList = new CardsList(this.products);
     const list = new InfinityList(cardsList, { step: this.pageSize });
     const search = new Search();
+    // NOTE: temporary commented
+    // const doubleSlider = new DoubleSlider({
+    //   min: 3,
+    //   max: 1200,
+    //   formatValue: value => `$${value}`,
+    // });
 
+    // NOTE: destroy component manually
     this.notificationManager = new NotificationManager({ stackLimit: 3 });
 
     this.components = {
       list,
-      search
+      search,
+      // doubleSlider
     };
   }
 
@@ -105,22 +123,76 @@ class OnlineStorePage {
     this.element = wrapper.firstElementChild;
   }
 
-  async add (start, end) {
-    const products = await this.loadData(start, end);
+  async add () {
+    const products = await this.loadData();
 
     this.products.push(...products);
 
     this.components.list.add(products);
   }
 
-  initEventListeners() {
-    const loadDataUnsubscribe = this.observer.subscribe('load-data', event => {
-      const { start, end } = event.payload;
+  async update () {
+    const products = await this.loadData();
 
-      this.add(start, end);
+    this.products = [...products];
+
+    this.components.list.update(products);
+  }
+
+  // NOTE: Pattern. Facade
+  registerObserverEvent (type, callback) {
+    const handler = this.observer.subscribe(type, callback);
+
+    this.subscriptions.push(handler);
+  }
+
+  registerStoreEvent (type, callback) {
+    const handler = this.store.subscribe(type, callback);
+
+    this.subscriptions.push(handler);
+  }
+
+  initEventListeners() {
+    this.registerObserverEvent('load-data', payload => {
+      const { start, end } = payload;
+
+      this.url.addPagination(start, end);
+
+      this.add();
     });
 
-    this.subscriptions.push(loadDataUnsubscribe);
+    this.registerObserverEvent('add-to-wishlist', payload => {
+      const { status, product } = payload;
+      const { title } = product;
+      const action = status ? 'added' : 'removed';
+
+      this.notificationManager.show(`Product "${title}" was successfully ${action} to wishlist`, 'info');
+    });
+
+    this.registerObserverEvent('add-to-cart', payload => {
+      const { status, product } = payload;
+      const { title } = product;
+      const action = status ? 'added' : 'removed';
+
+      this.notificationManager.show(`Product "${title}" was successfully ${action} to cart`, 'info');
+    });
+
+    this.registerObserverEvent('search-filter', searchString => {
+      this.url
+        .resetSearchParams()
+        .addSearch(searchString);
+
+      this.update();
+    });
+
+    this.registerObserverEvent('range-selected', payload => {
+      const { from, to } = payload;
+      this.url
+        .resetSearchParams()
+        .addFilter(from ,to);
+
+      this.update();
+    });
 
     // TODO: make refactoring
     this.subElements.gridBtn.addEventListener('pointerdown', event => {
@@ -206,6 +278,9 @@ class OnlineStorePage {
         component.destroy();
       }
     }
+
+    // NOTE: destroy component manually
+    this.notificationManager.destroy();
 
     this.subscriptions = [];
   }

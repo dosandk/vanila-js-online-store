@@ -2,6 +2,7 @@ import Router from './core/router/index.js';
 import Link from './core/router/link.js';
 import Store from './core/store/index.js';
 import reducers from './reducers/index.js';
+import connectToStore from "./core/store/connect";
 
 const navigationConfig = [
   {
@@ -13,14 +14,14 @@ const navigationConfig = [
   },
   {
     url: '/wishlist',
-    html: `<i class="bi bi-star"></i><span>Wishlist</span>`,
+    html: `<i class="bi bi-star"></i>Wishlist <span data-element="wishlistCounter">0</span>`,
     attributes: {
       class: 'link-unstyled'
     }
   },
   {
     url: '/cart',
-    html: `<i class="bi bi-cart"></i> <span>Cart</span>`,
+    html: `<i class="bi bi-cart"></i>Cart <span data-element="cartCounter">0</span>`,
     attributes: {
       class: 'link-unstyled'
     }
@@ -30,8 +31,9 @@ const navigationConfig = [
 class App {
   subElements = {};
 
-  constructor() {
+  constructor(store) {
     this.router = Router.instance;
+    this.store = store;
     this.render();
     this.getSubElements();
     this.renderTitle();
@@ -136,20 +138,36 @@ class App {
         link.classList.add(Link.activeClassName);
       }
     });
+
+    this.store.subscribe('ADD_PRODUCT', () => {
+      const cartCounter = this.element.querySelector('[data-element="cartCounter"]');
+
+      cartCounter.innerText = this.store.getState().products.length;
+
+    });
+
+    this.store.subscribe('ADD_TO_WISHLIST', () => {
+      const wishlistCounter = this.element.querySelector('[data-element="wishlistCounter"]');
+
+      wishlistCounter.innerText = this.store.getState().wishlist.length;
+
+    });
   }
 }
 
-const app = new App();
 const storeKey = Symbol.for('storeKey');
 const initStore = {
   counter: 0,
   loader: false,
-  products: []
+  products: [],
+  wishlist: []
 };
 
 const store = new Store(reducers, initStore);
 
 globalThis[storeKey] = store;
+
+const app = new (connectToStore(App));
 
 document.body.append(app.element);
 

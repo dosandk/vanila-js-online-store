@@ -18,12 +18,12 @@ export default class Observer {
   // TODO: add constructor
 
   dispatchEvent(event) {
-    const { type } = event;
+    const { type, payload } = event;
     const callbacks = this.callbacks[type];
 
     if (callbacks) {
       for (const [callback] of callbacks.entries()) {
-        callback(event);
+        callback(payload);
       }
     }
   }

@@ -1,10 +1,8 @@
 /* Search Component */
 .os-form-input > input {
   width: 100%;
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+  padding: 5px;
+  border: 1px solid #a8acb2;
   font-size: 1.2rem;
   font-weight: 300;
   font-family: "Montserrat", sans-serif;
@@ -13,8 +11,8 @@
 
 .os-form-input > input:focus,
 .os-form-input > input:focus-visible {
-  border: none;
-  outline: none
+  outline: none;
+  border: 1px solid #6c757d;
 }
 
 .os-form-input.use-icon {
@@ -22,7 +20,7 @@
 }
 
 .os-form-input.use-icon > input {
-  padding-right: 70px
+  padding-right: 50px
 }
 
 .os-form-input.use-icon .input-icon {
@@ -30,7 +28,7 @@
   align-items: center;
   position: absolute;
   height: 100%;
-  right: 40px;
+  right: 20px;
   top: 0;
   font-size: 1.375rem;
   color: #606060

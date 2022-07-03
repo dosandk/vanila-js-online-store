@@ -51,7 +51,12 @@ export default class NotificationManager {
   }
 
   destroy () {
+    for (const notification of this.notificationsList) {
+      notification.destroy();
+    }
+
     this.notificationsList = [];
+
     NotificationManager.instance = null;
   }
 }

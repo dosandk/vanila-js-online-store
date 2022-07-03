@@ -11,10 +11,8 @@ export default class CardsList {
 
   getTemplate () {
     return `
-      <div>
-        <div class="os-products-list" data-element="body">
-          <!-- Cards list -->
-        </div>
+      <div class="os-products-list" data-element="body">
+        <!-- Cards list -->
       </div>
     `;
   }
@@ -29,10 +27,9 @@ export default class CardsList {
 
   renderCards () {
     const cards = this.getCardsList(this.data);
-    const body = this.element.querySelector('[data-element="body"]');
 
-    body.innerHTML = '';
-    body.append(...cards);
+    this.element.innerHTML = '';
+    this.element.append(...cards);
   }
 
   update (data = []) {
@@ -52,10 +49,9 @@ export default class CardsList {
   add (data) {
     this.data = [...this.data, ...data];
 
-    const body = this.element.querySelector('[data-element="body"]');
     const cards = this.getCardsList(data);
 
-    body.append(...cards);
+    this.element.append(...cards);
   }
 
   remove () {

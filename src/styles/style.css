@@ -70,6 +70,11 @@ h1, h2, h3, h4, h5, h6, p {
   color: #fff
 }
 
+/* TODO: Make refactoring for colors*/
+.os-btn-primary:hover {
+  background-color: #2e6418;
+}
+
 .os-btn-default:hover {
   background-color: #e3e3e3;
 }
@@ -115,4 +120,13 @@ h1, h2, h3, h4, h5, h6, p {
 
 .sidebar__nav li .bi {
   padding-right: 10px;
+}
+
+.page-container {
+  padding-top: 25px;
+}
+
+.page-title {
+  color: #6c757d;
+  margin-bottom: 20px;
 }
