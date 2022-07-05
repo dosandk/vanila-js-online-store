@@ -3,7 +3,8 @@
   margin: 10px 5px;
   font-size: 14px;
   box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .5);
-  animation: calc((var(--value)) * 0.1) ease-out calc((var(--value)) * 0.9) fadeOut;
+  animation: calc((var(--value)) * 0.2) linear calc((var(--value)) * 0.8) fadeOut;
+  animation-fill-mode: forwards;
   z-index: 1000;
   background: #192a3e;
   border-radius: 4px;

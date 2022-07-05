@@ -3,6 +3,7 @@ import Pagination from '../../components/pagination/index.js';
 
 import connectToStore from '../../core/store/connect.js';
 import NotificationManager from "../../components/notification/notification-manager";
+import WishCardWrapper from "./wish-card/index.js"
 import CardsList from "../../components/cards-list";
 import connectToObserver from "../../core/observer/connect";
 
@@ -52,7 +53,10 @@ class WishListPage {
       totalPages: Math.ceil(this.products.length / this.pageSize)
     });
 
-    const list = new CardsList(this.products.slice(0, this.pageSize));
+    const list = new CardsList({
+      data: this.products.slice(0, this.pageSize),
+      CardComponent: WishCardWrapper
+    });
 
     this.notificationManager = new NotificationManager();
 
@@ -114,10 +118,14 @@ class WishListPage {
       this.notificationManager.show('Page has changed', 'success');
     });
 
-    this.registerStoreEvent('page-changed', pageIndex => {
-      this.update(pageIndex);
+    this.registerStoreEvent('REMOVE_FROM_WISHLIST', event => {
+      this.products = this.store.getState().wishlist;
 
-      this.notificationManager.show('Page has changed', 'success');
+      this.components.list.update(this.products);
+
+      const totalPages = Math.ceil(this.products.length / this.pageSize);
+
+      this.components.pagination.update(totalPages);
     });
   }
 

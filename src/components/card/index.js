@@ -1,8 +1,14 @@
 import {createElement, getSubElements} from '../../core/dom/index.js';
 import connectToObserver from "../../core/observer/connect.js";
 import connectToStore from "../../core/store/connect.js";
-import { addProduct } from '../../reducers/products.js';
-import { addToWishList as addToWishListAction } from '../../reducers/wishlist.js';
+import {
+  addProduct,
+  removeProduct
+} from '../../reducers/products.js';
+import {
+  addToWishList as addToWishListAction,
+  removeFromWishList
+} from '../../reducers/wishlist.js';
 
 import './card.css';
 
@@ -13,6 +19,11 @@ class Card {
     this.product = product;
     this.store = store;
     this.observer = observer;
+
+    const { products, wishlist } = this.store.getState();
+
+    this.cartProducts = products.map(product => product.id);
+    this.wishlist = wishlist.map(product => product.id);
 
     this.render();
     this.initEventListeners();
@@ -45,18 +56,22 @@ class Card {
 
   get footer() {
     return `<footer class="os-product-footer">
-      <button class="os-btn-default add-to-wishlist-btn" data-element="addToWishlist">
+      <button class="os-btn-default add-to-wishlist-btn ${this.isActive(this.wishlist)}" data-element="addToWishlist">
         <i class="bi bi-heart"></i>
         <i class="bi bi-heart-fill"></i>
         Wishlist
       </button>
-
-      <button class="os-btn-primary add-to-cart-btn" data-element="addToCart">
+      <div class="btns-separator"></div>
+      <button class="os-btn-default add-to-cart-btn ${this.isActive(this.cartProducts)}" data-element="addToCart">
         <i class="bi bi-cart"></i>
         <i class="bi bi-cart-check-fill"></i>
         Cart
       </button>
     </footer>`;
+  }
+
+  isActive (selected) {
+    return selected.includes(this.product.id) ? 'active' : '';
   }
 
   initEventListeners() {
@@ -70,19 +85,45 @@ class Card {
         status
       });
 
-      this.store.dispatch(addToWishListAction(this.product));
+      if (status) {
+        this.addProduct('wishList');
+      } else {
+        this.removeProduct('wishList');
+      }
     });
 
     addToCart.addEventListener('pointerdown', event => {
       const status = event.currentTarget.classList.toggle('active');
 
-      this.dispatchEvent('add-to-wishlist', {
+      this.dispatchEvent('add-to-cart', {
         product: this.product,
         status
       });
 
-      this.store.dispatch(addProduct(this.product));
+      if (status) {
+        this.addProduct('cartList');
+      } else {
+        this.removeProduct('cartList');
+      }
     });
+  }
+
+  addProduct (actionName = '') {
+    const actions = {
+      wishList: addToWishListAction,
+      cartList: addProduct
+    };
+
+    this.store.dispatch(actions[actionName](this.product));
+  }
+
+  removeProduct (actionName = '') {
+    const actions = {
+      wishList: removeFromWishList,
+      cartList: removeProduct
+    };
+
+    this.store.dispatch(actions[actionName](this.product));
   }
 
   dispatchEvent(type = '', payload = {}) {

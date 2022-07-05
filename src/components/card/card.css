@@ -10,7 +10,7 @@
 
 .os-product-img {
   display: flex;
-  height: 200px;
+  height: 150px;
   justify-content: center;
   margin: 12px 12px 0;
   background-repeat: no-repeat;
@@ -19,7 +19,7 @@
 }
 
 .os-product-content {
-  padding: 22px 24px
+  padding: 10px 20px;
 }
 
 .os-product-price-wrapper {
@@ -56,6 +56,11 @@
   font-weight: 400
 }
 
+.os-btn-default.active {
+  background-color: var(--primary-bg);
+  color: white;
+}
+
 .os-product-title,
 .os-product-description {
   margin: 0;
@@ -74,7 +79,7 @@
 
 .os-product-footer {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto 1fr;
 }
 
 .os-product-footer button {
@@ -86,6 +91,12 @@
 
 .os-product-footer button i {
   margin-right: 3px;
+}
+
+.btns-separator {
+  height: 100%;
+  width: 1px;
+  background: lightgray;
 }
 
 .add-to-wishlist-btn .bi-heart-fill {

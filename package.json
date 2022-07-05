@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "develop": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
+    "deploy": "gh-pages -d build",
     "test:jest": "cross-env NODE_ICU_DATA=node_modules/full-icu jest",
     "test:editorconfig": "editorconfig-checker --exclude '.git|.husky|node_modules'",
     "test:eslint": "eslint src/**/*.js --config .eslintrc.js",
@@ -30,6 +32,7 @@
     "eslint": "^8.18.0",
     "file-loader": "^6.2.0",
     "full-icu": "^1.4.0",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.1",
     "jest": "^28.1.1",

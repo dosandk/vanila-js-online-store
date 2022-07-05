@@ -1,9 +1,11 @@
-import Card from '../card/index.js';
-
 import './card-list.css';
 
 export default class CardsList {
-  constructor (data = []) {
+  constructor ({
+   CardComponent,
+   data = []
+ }) {
+    this.CardComponent = CardComponent;
     this.data = data;
     this.render();
     this.renderCards();
@@ -40,7 +42,7 @@ export default class CardsList {
 
   getCardsList (data = []) {
     return data.map(item => {
-      const card = new Card(item);
+      const card = new this.CardComponent(item);
 
       return card.element;
     });

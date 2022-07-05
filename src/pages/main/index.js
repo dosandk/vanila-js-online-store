@@ -1,12 +1,13 @@
 import Search from '../../components/search/index.js';
 import CardsList from '../../components/cards-list/index.js';
 import NotificationManager from '../../components/notification/notification-manager/index.js';
-import InfinityList from "../../components/infinity-list/index.js";
-import SortableTable from "../../components/sortable-table/index.js";
+import InfinityList from '../../components/infinity-list/index.js';
+import SortableTable from '../../components/sortable-table/index.js';
+import Card from '../../components/card';
 
 import httpRequest from '../../core/request/index.js';
-import connectToObserver from "../../core/observer/connect.js";
-import connectToStore from "../../core/store/connect.js";
+import connectToObserver from '../../core/observer/connect.js';
+import connectToStore from '../../core/store/connect.js';
 
 import RequestBuilder from '../../api/index.js';
 
@@ -73,7 +74,10 @@ class OnlineStorePage {
   }
 
   initComponents() {
-    const cardsList = new CardsList(this.products);
+    const cardsList = new CardsList({
+      data: this.products,
+      CardComponent: Card
+    });
     const list = new InfinityList(cardsList, { step: this.pageSize });
     const search = new Search();
     // NOTE: temporary commented
@@ -166,7 +170,10 @@ class OnlineStorePage {
       const { title } = product;
       const action = status ? 'added' : 'removed';
 
-      this.notificationManager.show(`Product "${title}" was successfully ${action} to wishlist`, 'info');
+      const message = `Product "${title}" was successfully ${action} to wishlist`;
+      const type = status ? 'success' : 'info';
+
+      this.notificationManager.show(message, type);
     });
 
     this.registerObserverEvent('add-to-cart', payload => {
@@ -174,7 +181,10 @@ class OnlineStorePage {
       const { title } = product;
       const action = status ? 'added' : 'removed';
 
-      this.notificationManager.show(`Product "${title}" was successfully ${action} to cart`, 'info');
+      const message = `Product "${title}" was successfully ${action} to cart`;
+      const type = status ? 'success' : 'info';
+
+      this.notificationManager.show(message, type);
     });
 
     this.registerObserverEvent('search-filter', searchString => {
@@ -195,7 +205,7 @@ class OnlineStorePage {
     });
 
     // TODO: make refactoring
-    this.subElements.gridBtn.addEventListener('pointerdown', event => {
+    this.subElements.gridBtn.addEventListener('pointerdown', () => {
       this.components.list.remove();
 
       const cardsList = new CardsList(this.products);

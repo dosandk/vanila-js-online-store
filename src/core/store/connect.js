@@ -17,7 +17,9 @@ const connectToStore = Component => class extends Component {
       }
     }
 
-    super.destroy();
+    if (super.destroy) {
+      super.destroy();
+    }
   }
 };
 

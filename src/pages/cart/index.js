@@ -3,8 +3,6 @@ import connectToStore from '../../core/store/connect.js';
 import Cart from '../../components/cart';
 import connectToObserver from '../../core/observer/connect';
 
-import './cart.css';
-
 class CartPage {
   subElements = {};
   components = {};

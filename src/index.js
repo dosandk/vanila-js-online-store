@@ -143,6 +143,12 @@ class App {
       const cartCounter = this.element.querySelector('[data-element="cartCounter"]');
 
       cartCounter.innerText = this.store.getState().products.length;
+    });
+
+    this.store.subscribe('REMOVE_PRODUCT', () => {
+      const cartCounter = this.element.querySelector('[data-element="cartCounter"]');
+
+      cartCounter.innerText = this.store.getState().products.length;
 
     });
 
@@ -150,7 +156,12 @@ class App {
       const wishlistCounter = this.element.querySelector('[data-element="wishlistCounter"]');
 
       wishlistCounter.innerText = this.store.getState().wishlist.length;
+    });
 
+    this.store.subscribe('REMOVE_FROM_WISHLIST', () => {
+      const wishlistCounter = this.element.querySelector('[data-element="wishlistCounter"]');
+
+      wishlistCounter.innerText = this.store.getState().wishlist.length;
     });
   }
 }

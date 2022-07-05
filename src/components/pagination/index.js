@@ -24,7 +24,9 @@ class Pagination {
         <a href="#" class="page-link previous" data-element="nav-prev">
           <i class="bi bi-chevron-left"></i>
         </a>
-        ${this.getPages()}
+        <ul class="page-list" data-element="pagination">
+          ${this.getPages()}
+        </ul>
         <a href="#" class="page-link next" data-element="nav-next">
           <i class="bi bi-chevron-right"></i>
         </a>
@@ -33,13 +35,9 @@ class Pagination {
   }
 
   getPages() {
-    return `
-      <ul class="page-list" data-element="pagination">
-        ${new Array(this.totalPages).fill(1).map((item, index) => {
-          return this.getPageTemplate(index);
-        }).join('')}
-      </ul>
-    `;
+    return new Array(this.totalPages).fill(1).map((item, index) => {
+      return this.getPageTemplate(index);
+    }).join('');
   }
 
   getPageTemplate(pageIndex = 0) {
@@ -98,6 +96,18 @@ class Pagination {
     if (this.totalPages) {
       this.element.removeAttribute('hidden');
     }
+  }
+
+  update (totalPages) {
+    this.totalPages = totalPages;
+
+    if (this.totalPages === 0) {
+      this.element.setAttribute('hidden', true);
+    }
+
+    const pagesList = this.element.querySelector('[data-element="pagination"]');
+
+    pagesList.innerHTML = this.getPages();
   }
 
   addEventListeners() {

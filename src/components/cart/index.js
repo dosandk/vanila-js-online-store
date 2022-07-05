@@ -1,7 +1,16 @@
-export default class Cart {
+import connectToStore from "../../core/store/connect";
+import {
+  removeProduct
+} from '../../reducers/products.js';
+
+import './cart-style.css';
+
+class Cart {
   items = {};
 
-  constructor () {
+  constructor (store) {
+    this.store = store;
+
     this.render();
     this.getSubElements();
     this.initEventListeners();
@@ -15,9 +24,10 @@ export default class Cart {
         </ul>
         <div class="footer">
           <div class="cart-total">
-            Total: <span data-element="total">0</span>
+            Total products: <span data-element="total">0</span>
           </div>
-          <button class="order-btn os-btn-primary" data-element="orderBtn">Order</button>
+          <!-- NOTE: temporary commented -->
+          <!-- <button class="order-btn os-btn-primary" data-element="orderBtn">Order</button>-->
         </div>
       </div>
     `;
@@ -57,15 +67,8 @@ export default class Cart {
 
         const value = parseInt(currentValue, 10) + parseInt(counter, 10)
 
-        if (parseInt(counter, 10) > 0) {
-          this.element.dispatchEvent(new CustomEvent('add-to-cart', {
-            detail: this.items[id],
-            bubbles: true
-          }));
-        } else {
-          this.element.dispatchEvent(new CustomEvent('remove-from-cart', {
-            bubbles: true
-          }));
+        if (parseInt(counter, 10) <= 0) {
+          this.store.dispatch(removeProduct(this.items[id]));
         }
 
         if (value === 0) {
@@ -152,3 +155,5 @@ export default class Cart {
     return wrapper.firstElementChild;
   }
 }
+
+export default connectToStore(Cart);
