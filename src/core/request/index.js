@@ -1,9 +1,25 @@
+import Proxy from './proxy.js';
+
+const requestProxy = new Proxy({
+  maxSize: 10
+});
+
 const httpRequest = {
   async request (url = '', options = {}) {
     try {
-      const response = await fetch(url, options);
+      const urlString = url.toString();
 
-      return await response.json();
+      // NOTE: Pattern. Proxy
+      if (requestProxy.has(urlString)) {
+        return requestProxy.get(urlString);
+      }
+
+      const response = await fetch(urlString, options);
+      const result = await response.json();
+
+      requestProxy.set(urlString, result);
+
+      return result;
     } catch (error) {
       throw new FetchError(error.message);
     }
