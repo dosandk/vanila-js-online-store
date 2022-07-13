@@ -1,6 +1,8 @@
+import connectToObserver from "../../core/observer/connect";
+
 import './sortable-table.css';
 
-export default class SortableTable {
+class SortableTable {
   element;
   subElements = {};
 
@@ -29,7 +31,10 @@ export default class SortableTable {
 
       column.dataset.order = newOrder;
 
-      this.dispatchEvent(id, newOrder);
+      this.dispatchEvent('sort-table', {
+        id,
+        order: newOrder
+      });
     }
   };
 
@@ -39,10 +44,11 @@ export default class SortableTable {
       id: headersConfig.find(item => item.sortable).id,
       order: 'asc'
     }
-  } = {}) {
+  } = {}, observer) {
     this.headersConfig = headersConfig;
     this.data = data;
     this.sorted = sorted;
+    this.observer = observer;
 
     this.initialize();
   }
@@ -168,15 +174,11 @@ export default class SortableTable {
     this.subElements.body.append(...element.children);
   }
 
-  dispatchEvent (id, order) {
-    // TODO: replace by observer
-    // this.element.dispatchEvent(new CustomEvent('sort-table', {
-    //   bubbles: true,
-    //   detail: {
-    //     sortBy: id,
-    //     order
-    //   }
-    // }));
+  dispatchEvent (type, payload) {
+    this.observer.dispatchEvent({
+      type,
+      payload
+    });
   }
 
   remove () {
@@ -191,3 +193,5 @@ export default class SortableTable {
     this.subElements = {};
   }
 }
+
+export default connectToObserver(SortableTable);

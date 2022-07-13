@@ -3,6 +3,7 @@ import CardsList from '../../components/cards-list/index.js';
 import NotificationManager from '../../components/notification/notification-manager/index.js';
 import InfinityList from '../../components/infinity-list/index.js';
 import SortableTable from '../../components/sortable-table/index.js';
+import headerConfig from './sortable-table-config.js';
 import Card from '../../components/card';
 
 import httpRequest from '../../core/request/index.js';
@@ -12,9 +13,6 @@ import connectToStore from '../../core/store/connect.js';
 import RequestBuilder from '../../api/index.js';
 
 import './main.css';
-
-// NOTE: temporary commented
-// import DoubleSlider from "../../components/double-slider";
 
 class OnlineStorePage {
   subscriptions = [];
@@ -56,9 +54,6 @@ class OnlineStorePage {
           <div data-element="search">
             <!-- Search component -->
           </div>
-          <div data-element="doubleSlider">
-            <!-- DoubleSlider component -->
-          </div>
           <div class="list-view-controls">
             <i class="bi bi-list" data-element="listBtn"></i>
             <i class="bi bi-grid" data-element="gridBtn"></i>
@@ -80,20 +75,13 @@ class OnlineStorePage {
     });
     const list = new InfinityList(cardsList, { step: this.pageSize });
     const search = new Search();
-    // NOTE: temporary commented
-    // const doubleSlider = new DoubleSlider({
-    //   min: 3,
-    //   max: 1200,
-    //   formatValue: value => `$${value}`,
-    // });
 
     // NOTE: destroy component manually
     this.notificationManager = new NotificationManager({ stackLimit: 3 });
 
     this.components = {
       list,
-      search,
-      // doubleSlider
+      search
     };
   }
 
@@ -204,11 +192,26 @@ class OnlineStorePage {
       this.update();
     });
 
+    this.registerObserverEvent('sort-table', payload => {
+      const { id, order } = payload;
+      const start = 1;
+      const end = start + this.pageSize;
+
+      this.url
+        .addPagination(start, end)
+        .addSort(id ,order);
+
+      this.update();
+    });
+
     // TODO: make refactoring
     this.subElements.gridBtn.addEventListener('pointerdown', () => {
       this.components.list.remove();
 
-      const cardsList = new CardsList(this.products);
+      const cardsList = new CardsList({
+        data: this.products,
+        CardComponent: Card
+      });
 
       this.components.list = new InfinityList(cardsList, { step: this.pageSize });
 
@@ -220,49 +223,7 @@ class OnlineStorePage {
     this.subElements.listBtn.addEventListener('pointerdown', event => {
       this.components.list.remove();
 
-      const sortableTable = new SortableTable([
-        {
-          id: 'images',
-          title: 'Image',
-          sortable: false,
-          template: data => {
-            return `
-              <td class="col">
-                <img class="sortable-table-image" alt="Image" src="${data[0].url}">
-              </td>`;
-          }
-        },
-        {
-          id: 'rating',
-          title: 'rating',
-          sortable: true,
-          sortType: 'number'
-        },
-        {
-          id: 'price',
-          title: 'Price',
-          sortable: true,
-          sortType: 'number'
-        },
-        {
-          id: 'title',
-          title: 'Title',
-          sortable: true,
-          sortType: 'string'
-        },
-        {
-          id: 'description',
-          title: 'Description',
-          sortable: true,
-          sortType: 'string',
-          template: description => {
-            return `
-              <td class="col">
-                ${description.slice(0, 50) + '...'}
-              </td>`;
-          }
-        }
-      ], {
+      const sortableTable = new SortableTable(headerConfig, {
         data: this.products
       });
 

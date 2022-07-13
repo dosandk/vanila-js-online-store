@@ -46,6 +46,7 @@ class InfinityList {
 
   render () {
     this.element = createElement();
+    this.element.classList.add('infinity-container');
     this.element.append(this.list.element);
   }
 

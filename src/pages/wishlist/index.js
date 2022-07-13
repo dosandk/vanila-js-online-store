@@ -126,6 +126,10 @@ class WishListPage {
       const totalPages = Math.ceil(this.products.length / this.pageSize);
 
       this.components.pagination.update(totalPages);
+
+      if (this.products.length === 0) {
+        this.subElements.emptyData.removeAttribute('hidden');
+      }
     });
   }
 

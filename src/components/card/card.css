@@ -57,8 +57,8 @@
 }
 
 .os-btn-default.active {
-  background-color: var(--primary-bg);
-  color: white;
+  background-color: var(--primary-bg) !important;
+  color: white !important;
 }
 
 .os-product-title,
