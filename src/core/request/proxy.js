@@ -16,8 +16,6 @@ export default class Proxy {
     }
 
     this.proxyCache.set(key, value);
-
-    console.error(this.proxyCache.size);
   }
 
   has (key) {
