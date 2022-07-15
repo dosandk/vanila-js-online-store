@@ -11,6 +11,7 @@ import connectToObserver from '../../core/observer/connect.js';
 import connectToStore from '../../core/store/connect.js';
 
 import RequestBuilder from '../../api/index.js';
+import SyncStorage from "../../core/storage/sync-storage";
 
 import './main.css';
 
@@ -26,6 +27,7 @@ class OnlineStorePage {
     this.observer = observer;
 
     this.url = new RequestBuilder('products');
+    this.storage = new SyncStorage().create('local');
 
     this.initComponents();
     this.render();
@@ -55,8 +57,8 @@ class OnlineStorePage {
             <!-- Search component -->
           </div>
           <div class="list-view-controls">
-            <i class="bi bi-list" data-element="listBtn"></i>
-            <i class="bi bi-grid" data-element="gridBtn"></i>
+            <i class="bi bi-list ${this.getMode() === 'table' ? 'active' : ''}" data-element="listBtn"></i>
+            <i class="bi bi-grid ${this.getMode() === 'grid' ? 'active' : ''}" data-element="gridBtn"></i>
           </div>
         </div>
 
@@ -68,12 +70,33 @@ class OnlineStorePage {
     `;
   }
 
+  getMode () {
+    const defaultMode = 'grid';
+
+    return this.storage.get('mode') || defaultMode;
+  }
+
+  setMode (mode = '') {
+    return this.storage.add('mode', mode);
+  }
+
+  initListComponent (mode = '') {
+    const currentMode = mode;
+
+    const modes = {
+      grid: () => new CardsList({
+        data: this.products,
+        CardComponent: Card
+      }),
+      table: () => new SortableTable(headerConfig, { data: this.products})
+    };
+
+    return new InfinityList(modes[currentMode](), { step: this.pageSize });
+  }
+
   initComponents() {
-    const cardsList = new CardsList({
-      data: this.products,
-      CardComponent: Card
-    });
-    const list = new InfinityList(cardsList, { step: this.pageSize });
+    const mode = this.getMode();
+    const list = this.initListComponent(mode);
     const search = new Search();
 
     // NOTE: destroy component manually
@@ -206,14 +229,12 @@ class OnlineStorePage {
 
     // TODO: make refactoring
     this.subElements.gridBtn.addEventListener('pointerdown', () => {
+      this.subElements.listBtn.classList.remove('active');
+      this.subElements.gridBtn.classList.add('active');
+
       this.components.list.remove();
-
-      const cardsList = new CardsList({
-        data: this.products,
-        CardComponent: Card
-      });
-
-      this.components.list = new InfinityList(cardsList, { step: this.pageSize });
+      this.setMode('grid');
+      this.components.list = this.initListComponent('grid');
 
       this.subElements.list.innerHTML = '';
       this.subElements.list.append(this.components.list.element);
@@ -221,13 +242,12 @@ class OnlineStorePage {
 
     // TODO: make refactoring
     this.subElements.listBtn.addEventListener('pointerdown', event => {
+      this.subElements.gridBtn.classList.remove('active');
+      this.subElements.listBtn.classList.add('active');
+
       this.components.list.remove();
-
-      const sortableTable = new SortableTable(headerConfig, {
-        data: this.products
-      });
-
-      this.components.list = new InfinityList(sortableTable, { step: this.pageSize });
+      this.setMode('table');
+      this.components.list = this.initListComponent('table');
 
       this.subElements.list.innerHTML = '';
       this.subElements.list.append(this.components.list.element);

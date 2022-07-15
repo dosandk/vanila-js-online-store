@@ -165,6 +165,10 @@ class SortableTable {
   }
 
   add (data) {
+    if (data.length) {
+      this.subElements.emptyPlaceholder.remove();
+    }
+
     const element = document.createElement('tbody');
 
     this.data = [...this.data, ...data];

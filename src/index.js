@@ -166,6 +166,7 @@ class App {
   }
 }
 
+// TODO: move to "create-store" module
 const storeKey = Symbol.for('storeKey');
 const initStore = {
   counter: 0,

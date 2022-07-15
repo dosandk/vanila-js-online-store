@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LocalStorage Service</title>
+</head>
+<body>
+
+<script type="module">
+  import SyncStorage from "./sync-storage.js";
+
+  const local = new SyncStorage().create('local', 'my-storage');
+  const session = new SyncStorage().create('session');
+  const cookie = new SyncStorage().create('cookie');
+
+
+  console.log(local.add('foo', 'bar'));
+  console.log(session.add('foo', 'bar'));
+  console.log(cookie.add('foo', 'bar'));
+
+  console.log(local.add('riba', 'baz'));
+  console.log(session.add('riba', 'baz'));
+  console.log(cookie.add('riba', 'baz'));
+
+  console.error(local.get('foo'));
+  console.error(session.get('foo'));
+  console.error(cookie.get('foo'));
+
+  console.error(local.get('riba'));
+  console.error(session.get('riba'));
+  console.error(cookie.get('riba'));
+
+  // console.error(local.removeAll('foo'));
+  // console.error(session.removeAll('foo'));
+  // console.error(cookie.removeAll('foo'));
+
+  console.error(local.getAll('foo'));
+  console.error(session.getAll('foo'));
+  console.error(cookie.getAll('foo'));
+</script>
+</body>
+</html>

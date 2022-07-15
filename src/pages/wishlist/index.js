@@ -17,11 +17,15 @@ class WishListPage {
     this.store = store;
     this.observer = observer;
 
-    const { wishlist } = this.store.getState();
-
-    this.products = wishlist;
+    this.products = this.getWishList();
 
     this.initialize();
+  }
+
+  getWishList () {
+    const { wishlist } = this.store.getState();
+
+    return wishlist;
   }
 
   // NOTE: Pattern. Facade
@@ -118,8 +122,8 @@ class WishListPage {
       this.notificationManager.show('Page has changed', 'success');
     });
 
-    this.registerStoreEvent('REMOVE_FROM_WISHLIST', event => {
-      this.products = this.store.getState().wishlist;
+    this.registerStoreEvent('REMOVE_FROM_WISHLIST', () => {
+      this.products = this.getWishList();
 
       this.components.list.update(this.products);
 
