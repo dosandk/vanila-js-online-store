@@ -4,6 +4,7 @@ const requestProxy = new Proxy({
   maxSize: 10
 });
 
+// NOTE. Patter. Adapter
 const httpRequest = {
   async request (url = '', options = {}) {
     try {

@@ -62,7 +62,6 @@ class OnlineStorePage {
           </div>
         </div>
 
-
         <div data-element="list">
           <!-- Cards List component -->
         </div>
@@ -88,7 +87,7 @@ class OnlineStorePage {
         data: this.products,
         CardComponent: Card
       }),
-      table: () => new SortableTable(headerConfig, { data: this.products})
+      table: () => new SortableTable(headerConfig, { data: this.products })
     };
 
     return new InfinityList(modes[currentMode](), { step: this.pageSize });
@@ -241,7 +240,7 @@ class OnlineStorePage {
     });
 
     // TODO: make refactoring
-    this.subElements.listBtn.addEventListener('pointerdown', event => {
+    this.subElements.listBtn.addEventListener('pointerdown', () => {
       this.subElements.gridBtn.classList.remove('active');
       this.subElements.listBtn.classList.add('active');
 

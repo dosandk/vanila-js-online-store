@@ -6,7 +6,7 @@ export default [
     template: data => {
       return `
         <td class="col">
-          <img class="sortable-table-image" alt="Image" src="${data[0].url}">
+          <img class="sortable-table-image" alt="product image" src="${data[0].url}">
         </td>`;
     }
   },

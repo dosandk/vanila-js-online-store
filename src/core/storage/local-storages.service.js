@@ -1,3 +1,4 @@
+// NOTE: Patter. Adapter
 export default class LocalStorageService {
   #storage;
 
