@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<head>
+  <style>
+    table {
+      width: 400px;
+      border: 1px solid red;
+      background: gainsboro;
+    }
+
+    tr {
+      background: white;
+    }
+
+    td {
+      width: 40px;
+      height: 40px;
+      border: 1px solid red;
+      text-align: center;
+      vertical-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<button id="add" tabindex="1">Get more fruits</button>
+
+<section>
+  <h1>Events Delegation</h1>
+
+  <table id="fruitsTable" cellspacing="10"></table>
+
+  <script>
+    const fruits = ['🍇','🍈','🍉','🍊','🍋','🍌','🍍','🥭','🍎','🍏','🍐','🍑','🍒','🍓','🫐','🥝','🍅','🫒','🥥'];
+    const generateRandomNumber = (min, max) => {
+      const rand = min - 0.5 + Math.random() * (max - min + 1);
+
+      return Math.round(rand);
+    };
+
+    const getFruit = () => {
+      const min = 0;
+      const max = fruits.length - 1;
+
+      return fruits[generateRandomNumber(min, max)];
+    };
+
+    const createCell = () => {
+      const cell = document.createElement('td');
+
+      cell.innerHTML = `<td>${getFruit()}</td>`;
+
+      return cell;
+    };
+
+    const createRow = () => {
+      const tr = document.createElement('tr');
+
+      tr.append(createCell());
+      tr.append(createCell());
+      tr.append(createCell());
+      tr.append(createCell());
+      tr.append(createCell());
+
+      fruitsTable.append(tr);
+    }
+
+    add.addEventListener('pointerdown', () => {
+      createRow();
+    });
+
+    fruitsTable.addEventListener('pointerdown', event => {
+      // NOTE: Events Delegation
+      if (event.target.closest('td')) {
+        console.error(`%c Fruit: ${event.target.textContent}`, 'font-size: 16px;');
+      }
+    });
+
+    createRow();
+
+
+    window.getAllEventListeners = () => {
+      [...document.querySelectorAll("*")].forEach(element => {
+        const events = getEventListeners(element);
+
+        if (Object.keys(events).length) {
+          console.log(element, events)
+        }
+      });
+    };
+  </script>
+</section>

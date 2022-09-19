@@ -5,6 +5,7 @@ export default class Observer {
   callbacks = {};
 
   // NOTE: Pattern. Singleton
+  // TODO: add constructor
   static get instance() {
     if (Observer.#instance) {
       return Observer.#instance;
@@ -14,8 +15,6 @@ export default class Observer {
 
     return Observer.#instance;
   }
-
-  // TODO: add constructor
 
   dispatchEvent(event) {
     const { type, payload } = event;

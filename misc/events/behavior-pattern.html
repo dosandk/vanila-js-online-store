@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<head>
+  <style>
+    #turtle {
+      color: darkolivegreen;
+      font-weight: bold;
+    }
+    .rabbit {
+      color: deeppink;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <button data-hide="#turtle">Click to hide Turtle</button>
+  <button data-hide=".rabbit">Click to hide Rabbit</button>
+
+  <pre id="turtle">
+      _____     ____
+     /      \  |  o |
+    |        |/ ___\|
+    |_________/
+    |_|_| |_|_|
+  </pre>
+
+  <pre class="rabbit">
+                 ,\
+               \\\,_
+                \` ,\
+           __,.-" =__)
+         ."        )
+      ,_/   ,    \/\_
+      \_|    )_-\ \_-`
+         `-----` `--`
+  </pre>
+
+  <pre class="rabbit">
+      / \`\          __
+      |  \ `\      /`/ \
+      \_/`\  \-"-/` /\  \
+           |       |  \  |
+           (d     b)   \_/
+           /       \
+       ,".|.'.\_/.'.|.",
+      /   /\' _|_ '/\   \
+      |  /  '-`"`-'  \  |
+      | |             | |
+      | \    \   /    / |
+       \ \    \ /    / /
+        `"`\   :   /'"`
+            `""`""`
+  </pre>
+
+  <script>
+    document.addEventListener('pointerdown', event => {
+      const { hide: hideSelector } = event.target.dataset;
+
+      if (hideSelector) {
+        const elements = document.querySelectorAll(hideSelector);
+
+        for (const element of elements) {
+          element.style.display = 'none';
+        }
+      }
+    });
+  </script>
+</body>

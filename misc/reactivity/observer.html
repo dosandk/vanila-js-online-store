@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Observer</title>
+</head>
+<body>
+
+<input id="foo" data-source type="text"/>
+<br>
+<input id="bar" data-source type="text"/>
+
+<ul>
+  <li>
+    Output #1:
+    <span data-bind="foo"></span>
+  </li>
+  <li>
+    Output #2:
+    <span data-bind="bar"></span>
+  </li>
+  <li>
+    Output #3:
+    <span data-bind="bar"></span>
+  </li>
+</ul>
+
+<script type="module">
+  class Observer {
+    subscribers = [];
+
+    subscribe(callback) {
+      this.subscribers.push(callback);
+
+      return () => {
+        return this.subscribers.filter(subscriber => subscriber !== callback);
+      }
+    }
+
+    notify(data) {
+      for (const subscriber of this.subscribers) {
+        subscriber(data);
+      }
+    }
+  }
+
+  const run = () => {
+    const sourceElements = [...document.querySelectorAll('[data-source]')];
+
+    for (const source of sourceElements) {
+      const observer = new Observer();
+      const elements = document.querySelectorAll(`[data-bind="${source.id}"]`);
+
+      for (const element of elements) {
+        observer.subscribe(data => {
+          element.innerHTML = data;
+        });
+      }
+
+      source.addEventListener('input', () => {
+        observer.notify(source.value);
+      });
+    }
+  }
+
+  run();
+</script>
+</body>
+</html>

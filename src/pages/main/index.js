@@ -209,7 +209,7 @@ class OnlineStorePage {
       const { from, to } = payload;
       this.url
         .resetSearchParams()
-        .addFilter(from ,to);
+        .addFilter(from, to);
 
       this.update();
     });
@@ -221,7 +221,7 @@ class OnlineStorePage {
 
       this.url
         .addPagination(start, end)
-        .addSort(id ,order);
+        .addSort(id, order);
 
       this.update();
     });

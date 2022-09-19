@@ -65,7 +65,7 @@ class Cart {
         const counterBox = counterContainer.querySelector(`[data-element="${id}"]`);
         const currentValue = counterBox.innerText;
 
-        const value = parseInt(currentValue, 10) + parseInt(counter, 10)
+        const value = parseInt(currentValue, 10) + parseInt(counter, 10);
 
         if (parseInt(counter, 10) <= 0) {
           this.store.dispatch(removeProduct(this.items[id]));

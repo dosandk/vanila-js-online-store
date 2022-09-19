@@ -3,7 +3,7 @@ import Pagination from '../../components/pagination/index.js';
 
 import connectToStore from '../../core/store/connect.js';
 import NotificationManager from "../../components/notification/notification-manager";
-import WishCardWrapper from "./wish-card/index.js"
+import WishCardWrapper from "./wish-card/index.js";
 import CardsList from "../../components/cards-list";
 import connectToObserver from "../../core/observer/connect";
 

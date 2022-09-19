@@ -134,9 +134,11 @@ class SortableTable {
     return arr.sort((a, b) => {
       switch (sortType) {
         case 'number':
-          return direction * (a[field] - b[field]);
+        return direction * (a[field] - b[field]);
         case 'string':
-          return direction * a[field].localeCompare(b[field], ['ru', 'en']);
+        return direction * a[field].localeCompare(b[field], ['ru', 'en']);
+        default:
+        throw new Error(`There is no sorting algorithm for sortType: "${sortType}"`);
       }
     });
   }
@@ -166,7 +168,7 @@ class SortableTable {
 
   add (data) {
     if (data.length) {
-      this.subElements.emptyPlaceholder.remove();
+      this.subElements.emptyPlaceholder?.remove();
     }
 
     const element = document.createElement('tbody');

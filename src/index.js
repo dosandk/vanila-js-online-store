@@ -92,7 +92,7 @@ class App {
         </section>
       </main>
     </div>`;
-  };
+  }
 
   render() {
     const element = document.createElement('div');
@@ -179,7 +179,8 @@ const store = new Store(reducers, initStore);
 
 globalThis[storeKey] = store;
 
-const app = new (connectToStore(App));
+const ConnectedApp = connectToStore(App);
+const app = new ConnectedApp();
 
 document.body.append(app.element);
 

@@ -1,5 +1,3 @@
-const storage = new Map();
-
 export default class MemoryAdapter {
   #storage = new Map();
 

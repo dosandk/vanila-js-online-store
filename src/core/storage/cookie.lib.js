@@ -26,13 +26,15 @@ export const readCookie = (name) => {
     });
 
   return cookie ? cookie[1] : null;
-}
+};
 
 export const readAllCookies = () => {
   const result = {};
   const cookies = document.cookie.split(";");
 
-  if (!document.cookie.length) return result;
+  if (!document.cookie.length) {
+    return result;
+  }
 
   for (const cookie of cookies) {
     const [name, ...values] = cookie.split("=");
@@ -41,11 +43,11 @@ export const readAllCookies = () => {
   }
 
   return result;
-}
+};
 
 export const deleteCookie = (name) => {
   writeCookie(name, '', -1);
-}
+};
 
 export const deleteAllCookies = () => {
   const cookies = document.cookie.split(";");
@@ -55,4 +57,4 @@ export const deleteAllCookies = () => {
 
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
   }
-}
+};

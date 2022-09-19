@@ -9,7 +9,7 @@ export default class Link {
     } else {
       this.element.classList.remove(Link.activeClassName);
     }
-  }
+  };
 
   constructor({
     url = '',
