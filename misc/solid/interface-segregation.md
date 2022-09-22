@@ -1,1 +1,0 @@
-# interface segregation principle
