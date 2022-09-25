@@ -1,11 +1,10 @@
-import connectToObserver from "../../core/observer/connect";
+import BaseComponent from '../base-component.js';
+import connectToObserver from '../../core/observer/connect.js';
 
 import './sortable-table.css';
 
-class SortableTable {
-  element;
+class SortableTable extends BaseComponent {
   subElements = {};
-
   headersConfig = [];
   data = [];
 
@@ -45,17 +44,14 @@ class SortableTable {
       order: 'asc'
     }
   } = {}, observer) {
+    super();
+
     this.headersConfig = headersConfig;
     this.data = data;
     this.sorted = sorted;
     this.observer = observer;
 
-    this.initialize();
-  }
-
-  initialize() {
     this.render();
-    this.getSubElements();
     this.initEventListeners();
   }
 
@@ -119,6 +115,7 @@ class SortableTable {
     element.innerHTML = this.getTable(sortedData);
 
     this.element = element.firstElementChild;
+    this.subElements = this.getSubElements();
   }
 
   sortData (field, order) {
@@ -144,26 +141,17 @@ class SortableTable {
   }
 
   initEventListeners () {
-    this.subElements.header.addEventListener('pointerdown', this.onSortClick);
-  }
+    const { header } = this.subElements;
 
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll('[data-element]');
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
+    header.addEventListener('pointerdown', this.onSortClick);
   }
 
   update (data = []) {
     this.data = data;
 
-    this.subElements.body.innerHTML = this.getTableBody(data);
+    const { body } = this.subElements;
+
+    body.innerHTML = this.getTableBody(data);
   }
 
   add (data) {
@@ -185,18 +173,6 @@ class SortableTable {
       type,
       payload
     });
-  }
-
-  remove () {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy () {
-    this.remove();
-    this.element = {};
-    this.subElements = {};
   }
 }
 

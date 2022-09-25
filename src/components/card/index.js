@@ -1,6 +1,6 @@
-import {createElement, getSubElements} from '../../core/dom/index.js';
-import connectToObserver from "../../core/observer/connect.js";
-import connectToStore from "../../core/store/connect.js";
+import BaseComponent from '../base-component.js';
+import connectToObserver from '../../core/observer/connect.js';
+import connectToStore from '../../core/store/connect.js';
 import {
   addProduct,
   removeProduct
@@ -12,10 +12,12 @@ import {
 
 import './card.css';
 
-class Card {
+class Card extends BaseComponent {
   subElements = {};
 
   constructor(product = {}, store, observer) {
+    super();
+
     this.product = product;
     this.store = store;
     this.observer = observer;
@@ -133,23 +135,6 @@ class Card {
   update(product = {}) {
     this.product = product;
     this.element.innerHTML = this.template;
-  }
-
-  render() {
-    this.element = createElement(this.template);
-    this.subElements = getSubElements(this.element);
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }
 

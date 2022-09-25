@@ -1,14 +1,15 @@
-import connectToStore from "../../core/store/connect";
-import {
-  removeProduct
-} from '../../reducers/products.js';
+import BaseComponent from '../base-component.js';
+import connectToStore from '../../core/store/connect';
+import { removeProduct } from '../../reducers/products.js';
 
 import './cart-style.css';
 
-class Cart {
+class Cart extends BaseComponent {
   items = {};
 
   constructor (store) {
+    super();
+
     this.store = store;
 
     this.render();
@@ -31,27 +32,6 @@ class Cart {
         </div>
       </div>
     `;
-  }
-
-  render () {
-    const element = document.createElement('div');
-
-    element.innerHTML = this.template;
-
-    this.element = element.firstElementChild;
-  }
-
-  getSubElements () {
-    const result = {};
-    const elements = this.element.querySelectorAll('[data-element]');
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   initEventListeners () {

@@ -1,3 +1,4 @@
+import BaseComponent from '../../components/base-component.js';
 import { getSubElements } from '../../core/dom/index.js';
 import Pagination from '../../components/pagination/index.js';
 
@@ -7,13 +8,14 @@ import WishCardWrapper from "./wish-card/index.js";
 import CardsList from "../../components/cards-list";
 import connectToObserver from "../../core/observer/connect";
 
-class WishListPage {
+class WishListPage extends BaseComponent {
   subElements = {};
   components = {};
   subscriptions = [];
   pageSize = 3;
 
   constructor (match, store, observer) {
+    super();
     this.store = store;
     this.observer = observer;
 
@@ -36,7 +38,7 @@ class WishListPage {
     this.initEventListeners();
   }
 
-  getTemplate () {
+  get template () {
     return `
       <div class="page-container">
         <h1 class="page-title">WishList</h1>
@@ -80,13 +82,7 @@ class WishListPage {
   }
 
   render () {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.getTemplate();
-
-    this.element = wrapper.firstElementChild;
-
-    this.subElements = getSubElements(this.element);
+    super.render();
 
     if (this.products.length) {
       this.subElements.emptyData.setAttribute('hidden', true);
@@ -137,14 +133,8 @@ class WishListPage {
     });
   }
 
-  remove () {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
   destroy () {
-    this.remove();
+    super.destroy();
 
     for (const component of Object.values(this.components)) {
       if (component.destroy) {
@@ -153,9 +143,7 @@ class WishListPage {
     }
 
     this.subscriptions = [];
-    this.element = null;
     this.components = null;
-    this.subElements = null;
   }
 }
 

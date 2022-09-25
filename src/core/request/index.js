@@ -54,10 +54,6 @@ const httpRequest = {
 
 class FetchError extends Error {
   name = 'FetchError';
-
-  constructor(message) {
-    super(message);
-  }
 }
 
 // handle uncaught failed fetch through

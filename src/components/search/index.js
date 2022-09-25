@@ -1,9 +1,10 @@
-import {debounce} from './debounce.js';
+import BaseComponent from '../base-component.js';
 import connectToObserver from '../../core/observer/connect.js';
+import {debounce} from './debounce.js';
 
 import './search.css';
 
-class Search {
+class Search extends BaseComponent {
   element;
   subElements = {};
   delay = 300;
@@ -15,14 +16,11 @@ class Search {
   }, this.delay);
 
   constructor(observer) {
+    super();
+
     this.observer = observer;
 
-    this.initialize();
-  }
-
-  initialize() {
     this.render();
-    this.getSubElements();
     this.addEventListeners();
   }
 
@@ -41,27 +39,6 @@ class Search {
     `;
   }
 
-  render() {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll('[data-element]');
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
-  }
-
   dispatchEvent(searchString = '') {
     this.observer.dispatchEvent({
       type: 'search-filter',
@@ -75,18 +52,6 @@ class Search {
 
   clear() {
     this.element.reset();
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }
 

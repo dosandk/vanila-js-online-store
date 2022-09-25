@@ -1,5 +1,5 @@
+import BaseComponent from '../../../components/base-component.js';
 import Card from '../../../components/card/index.js';
-import { getSubElements } from '../../../core/dom/index.js';
 
 import './wish-card.css';
 
@@ -13,8 +13,10 @@ class WishCard extends Card {
   initEventListeners () {}
 }
 
-export default class WishCardWrapper {
+export default class WishCardWrapper extends BaseComponent {
   constructor(product) {
+    super();
+
     this.product = product;
     this.wishCard = new WishCard(this.product);
 
@@ -36,20 +38,16 @@ export default class WishCardWrapper {
   }
 
   render () {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-
-    this.subElements = getSubElements(this.element);
+    super.render();
 
     this.subElements.card.append(this.wishCard.element);
   }
 
 
   initEventListeners () {
-    this.subElements.closeBtn.addEventListener('pointerdown', () => {
+    const { closeBtn } = this.subElements;
+
+    closeBtn.addEventListener('pointerdown', () => {
       this.wishCard.removeProduct('wishList');
     });
   }

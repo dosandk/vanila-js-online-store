@@ -1,21 +1,23 @@
+import BaseComponent from '../../components/base-component.js';
 import Search from '../../components/search/index.js';
 import CardsList from '../../components/cards-list/index.js';
 import NotificationManager from '../../components/notification/notification-manager/index.js';
 import InfinityList from '../../components/infinity-list/index.js';
 import SortableTable from '../../components/sortable-table/index.js';
 import headerConfig from './sortable-table-config.js';
-import Card from '../../components/card';
 
+import Card from '../../components/card';
 import httpRequest from '../../core/request/index.js';
 import connectToObserver from '../../core/observer/connect.js';
-import connectToStore from '../../core/store/connect.js';
 
+import connectToStore from '../../core/store/connect.js';
 import RequestBuilder from '../../api/index.js';
-import SyncStorage from "../../core/storage/sync-storage";
+
+import SyncStorage from '../../core/storage/sync-storage.js';
 
 import './main.css';
 
-class OnlineStorePage {
+class OnlineStorePage extends BaseComponent {
   subscriptions = [];
   subElements = [];
   components = {};
@@ -23,6 +25,8 @@ class OnlineStorePage {
   products = [];
 
   constructor(match, store, observer) {
+    super();
+
     this.store = store;
     this.observer = observer;
 
@@ -31,7 +35,6 @@ class OnlineStorePage {
 
     this.initComponents();
     this.render();
-    this.getSubElements();
     this.renderComponents();
     this.initEventListeners();
 
@@ -47,7 +50,7 @@ class OnlineStorePage {
     return await httpRequest.get(this.url);
   }
 
-  getTemplate() {
+  get template() {
     return `
       <div class="page-container">
         <h1 class="page-title">Products</h1>
@@ -114,27 +117,6 @@ class OnlineStorePage {
 
       root.append(element);
     }
-  }
-
-  getSubElements () {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
-  }
-
-  render() {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.getTemplate();
-
-    this.element = wrapper.firstElementChild;
   }
 
   async add () {
@@ -253,15 +235,8 @@ class OnlineStorePage {
     });
   }
 
-  remove () {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
   destroy() {
-    this.remove();
-    this.element = null;
+    super.destroy();
 
     for (const component of Object.values(this.components)) {
       if (component.destroy) {

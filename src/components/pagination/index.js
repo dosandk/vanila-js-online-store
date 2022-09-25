@@ -1,8 +1,9 @@
+import BaseComponent from '../base-component.js';
 import connectToObserver from '../../core/observer/connect.js';
 
 import './pagination.css';
 
-class Pagination {
+class Pagination extends BaseComponent {
   constructor(
     {
       activePageIndex = 0,
@@ -10,6 +11,8 @@ class Pagination {
     } = {},
     observer
   ) {
+    super();
+
     this.activePageIndex = activePageIndex;
     this.totalPages = totalPages;
     this.observer = observer;
@@ -18,7 +21,7 @@ class Pagination {
     this.addEventListeners();
   }
 
-  getTemplate() {
+  get template() {
     return `
       <nav class="os-pagination" hidden>
         <a href="#" class="page-link previous" data-element="nav-prev">
@@ -87,11 +90,7 @@ class Pagination {
   }
 
   render() {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.getTemplate();
-
-    this.element = wrapper.firstElementChild;
+    super.render();
 
     if (this.totalPages) {
       this.element.removeAttribute('hidden');

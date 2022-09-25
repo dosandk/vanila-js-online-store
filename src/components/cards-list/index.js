@@ -1,30 +1,26 @@
+import BaseComponent from '../base-component.js';
+
 import './card-list.css';
 
-export default class CardsList {
+export default class CardsList extends BaseComponent {
   constructor ({
    CardComponent,
    data = []
  }) {
+    super();
+
     this.CardComponent = CardComponent;
     this.data = data;
     this.render();
     this.renderCards();
   }
 
-  getTemplate () {
+  get template () {
     return `
       <div class="os-products-list" data-element="body">
         <!-- Cards list -->
       </div>
     `;
-  }
-
-  render () {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.getTemplate();
-
-    this.element = wrapper.firstElementChild;
   }
 
   renderCards () {
@@ -54,11 +50,5 @@ export default class CardsList {
     const cards = this.getCardsList(data);
 
     this.element.append(...cards);
-  }
-
-  remove () {
-    if (this.element) {
-      this.element.remove();
-    }
   }
 }

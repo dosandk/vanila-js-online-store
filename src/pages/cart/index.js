@@ -6,11 +6,9 @@ import connectToObserver from '../../core/observer/connect';
 class CartPage {
   subElements = {};
   components = {};
-  subscriptions = [];
 
   constructor (match, store, observer) {
     this.store = store;
-    this.observer = observer;
 
     const { products } = this.store.getState();
 
@@ -82,13 +80,7 @@ class CartPage {
       }
     }
 
-    for (const unsubscribe of this.subscriptions) {
-      unsubscribe();
-    }
-
-    this.element = null;
-    this.components = null;
-    this.subElements = null;
+    this.components = {};
   }
 }
 

@@ -1,7 +1,10 @@
+import BaseComponent from '../../components/base-component.js';
+
 import './error404.css';
 
-export default class Page404 {
+export default class Page404 extends BaseComponent {
   constructor() {
+    super();
     this.render();
   }
 
@@ -12,13 +15,5 @@ export default class Page404 {
         <h2>Page not found</h2>
       </div>
     `;
-  }
-
-  render () {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
   }
 }

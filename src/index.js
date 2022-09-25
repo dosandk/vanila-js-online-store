@@ -1,8 +1,9 @@
+import BaseComponent from './components/base-component.js';
 import Router from './core/router/index.js';
 import Link from './core/router/link.js';
 import Store from './core/store/index.js';
 import reducers from './reducers/index.js';
-import connectToStore from "./core/store/connect";
+import connectToStore from './core/store/connect.js';
 
 const navigationConfig = [
   {
@@ -28,14 +29,15 @@ const navigationConfig = [
   }
 ];
 
-class App {
+class App extends BaseComponent {
   subElements = {};
 
   constructor(store) {
+    super();
+
     this.router = Router.instance;
     this.store = store;
     this.render();
-    this.getSubElements();
     this.renderTitle();
     this.renderNavigationLinks();
 
@@ -92,27 +94,6 @@ class App {
         </section>
       </main>
     </div>`;
-  }
-
-  render() {
-    const element = document.createElement('div');
-
-    element.innerHTML = this.template;
-
-    this.element = element.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll('[data-element]');
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   initializeRouter() {

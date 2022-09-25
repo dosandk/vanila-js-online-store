@@ -1,7 +1,7 @@
-import { DOM, createElement, addEventListener, removeEventListener } from '../../core/dom/index.js';
+import BaseComponent from '../base-component.js';
 import connectToObserver from '../../core/observer/connect.js';
 
-class InfinityList {
+class InfinityList extends BaseComponent {
   loading = false;
 
   onWindowScroll = () => {
@@ -28,6 +28,8 @@ class InfinityList {
     } = {},
     observer
   ) {
+    super();
+
     this.list = list;
     this.step = step;
     this.start = 1;
@@ -45,7 +47,8 @@ class InfinityList {
   }
 
   render () {
-    this.element = createElement();
+    super.render();
+
     this.element.classList.add('infinity-container');
     this.element.append(this.list.element);
   }
@@ -73,22 +76,16 @@ class InfinityList {
   }
 
   initEventListeners () {
-    addEventListener(DOM.document, 'scroll', this.onWindowScroll);
-  }
-
-  remove () {
-    if (this.element) {
-      this.element.remove();
-    }
+    document.addEventListener('scroll', this.onWindowScroll, {
+      signal: this.abortController.signal
+    });
   }
 
   destroy () {
-    this.remove();
-    this.element = null;
+    super.destroy();
+
     this.list = null;
     this.loading = false;
-
-    removeEventListener(DOM.document, 'scroll', this.onWindowScroll);
   }
 }
 

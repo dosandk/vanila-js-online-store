@@ -17,7 +17,7 @@ export default class NotificationMessage {
   // NOTE: abstract class
   constructor() {
     if (new.target === NotificationMessage) {
-      throw new TypeError("Cannot construct Abstract instances directly");
+      throw new TypeError('Cannot construct Abstract instances directly');
     }
   }
 
