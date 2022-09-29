@@ -13,7 +13,6 @@ class Cart extends BaseComponent {
     this.store = store;
 
     this.render();
-    this.getSubElements();
     this.initEventListeners();
   }
 
@@ -47,11 +46,8 @@ class Cart extends BaseComponent {
 
         const value = parseInt(currentValue, 10) + parseInt(counter, 10);
 
-        if (parseInt(counter, 10) <= 0) {
+        if (value <= 0) {
           this.store.dispatch(removeProduct(this.items[id]));
-        }
-
-        if (value === 0) {
           delete this.items[id];
           counterContainer.remove();
         } else {

@@ -1,13 +1,14 @@
-import { getSubElements } from '../../core/dom/index.js';
-import connectToStore from '../../core/store/connect.js';
+import BaseComponent from '../../components/base-component.js';
 import Cart from '../../components/cart';
-import connectToObserver from '../../core/observer/connect';
+import connectToStore from '../../core/store/connect.js';
 
-class CartPage {
+class CartPage extends BaseComponent {
   subElements = {};
   components = {};
 
-  constructor (match, store, observer) {
+  constructor (match, store) {
+    super();
+
     this.store = store;
 
     const { products } = this.store.getState();
@@ -23,7 +24,7 @@ class CartPage {
     this.renderComponents();
   }
 
-  getTemplate () {
+  get template () {
     return `
       <div class="page-container">
         <h1 class="page-title">Cart</h1>
@@ -55,24 +56,8 @@ class CartPage {
     }
   }
 
-  render () {
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.getTemplate();
-
-    this.element = wrapper.firstElementChild;
-
-    this.subElements = getSubElements(this.element);
-  }
-
-  remove () {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
   destroy () {
-    this.remove();
+    super.destroy();
 
     for (const component of Object.values(this.components)) {
       if (component.destroy) {
@@ -85,4 +70,4 @@ class CartPage {
 }
 
 // NOTE: Pattern. Decorator
-export default connectToStore(connectToObserver(CartPage));
+export default connectToStore(CartPage);
