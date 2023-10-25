@@ -1,12 +1,38 @@
-import Proxy from './proxy.js';
+import Proxy from "./proxy.js";
 
 const requestProxy = new Proxy({
-  maxSize: 10
+  maxSize: 10,
 });
 
-// NOTE. Patter. Adapter
+const collection = [];
+
+const transform = (data) => {
+  const {
+    id = "",
+    images = [],
+    rating = 0,
+    price = 0,
+    title = "",
+    description = "",
+  } = data;
+
+  const result = {
+    id,
+    images: [images[0]],
+    rating,
+    price,
+    title,
+    description,
+  };
+
+  collection.push(result);
+
+  return result;
+};
+
+// NOTE Patter. Adapter
 const httpRequest = {
-  async request (url = '', options = {}) {
+  async request(url = "", options = {}) {
     try {
       const urlString = url.toString();
 
@@ -18,48 +44,50 @@ const httpRequest = {
       const response = await fetch(urlString, options);
       const result = await response.json();
 
-      requestProxy.set(urlString, result);
+      const data = result.map((item) => transform(item));
 
-      return result;
+      requestProxy.set(urlString, data);
+
+      return data;
     } catch (error) {
       throw new FetchError(error.message);
     }
   },
 
-  async get(url = '', options = {}) {
+  async get(url = "", options = {}) {
     return await this.request(url, options);
   },
 
-  async post(url = '', options = {}) {
+  async post(url = "", options = {}) {
     return await this.request(url, {
-      type: 'POST',
-      ...options
+      type: "POST",
+      ...options,
     });
   },
 
-  async put(url = '', options = {}) {
+  async put(url = "", options = {}) {
     return await this.request(url, {
-      type: 'PUT',
-      ...options
+      type: "PUT",
+      ...options,
     });
   },
 
-  async delete(url = '', options = {}) {
+  async delete(url = "", options = {}) {
     return await this.request(url, {
-      type: 'DELETE',
-      ...options
+      type: "DELETE",
+      ...options,
     });
-  }
+  },
 };
 
 class FetchError extends Error {
-  name = 'FetchError';
+  name = "FetchError";
 }
 
 // handle uncaught failed fetch through
-window.addEventListener('unhandledrejection', event => {
+window.addEventListener("unhandledrejection", (event) => {
   if (event.reason instanceof FetchError) {
-    console.error('Network error has occurred.');
+    console.error("Network error has occurred.");
   }
 });
 

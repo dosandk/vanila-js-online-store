@@ -5,22 +5,22 @@ class BaseComponent {
 
   constructor() {
     if (new.target === BaseComponent) {
-      throw new TypeError('Cannot construct Abstract instances directly');
+      throw new TypeError("Cannot construct Abstract instances directly");
     }
   }
 
-  render () {
+  render() {
     this.element = this.createElement();
     this.subElements = this.getSubElements();
   }
 
-  get template () {
-    return '';
+  get template() {
+    return "";
   }
 
   getSubElements() {
     const result = {};
-    const elements = this.element.querySelectorAll('[data-element]');
+    const elements = this.element.querySelectorAll("[data-element]");
 
     for (const subElement of elements) {
       const name = subElement.dataset.element;
@@ -32,20 +32,20 @@ class BaseComponent {
   }
 
   createElement = () => {
-    const wrapper = document.createElement('div');
+    const wrapper = document.createElement("div");
 
     wrapper.innerHTML = this.template;
 
     return wrapper.firstElementChild || wrapper;
   };
 
-  remove () {
+  remove() {
     if (this.element) {
       this.element.remove();
     }
   }
 
-  destroy () {
+  destroy() {
     this.remove();
     this.element = {};
     this.subElements = {};

@@ -4,7 +4,7 @@ export default class Store {
 
   state = {};
 
-  listeners = [];
+  listeners = new Map();
 
   // NOTE: Pattern: Singleton
   constructor(reducers = {}, initialState = {}) {
@@ -33,6 +33,7 @@ export default class Store {
   dispatch (action = {}) {
     const { type, payload } = action;
 
+    // Logger
     console.error('action', action);
 
     for (const reducerName of Object.keys(this.reducers)) {
@@ -41,6 +42,7 @@ export default class Store {
       if (reducerMethod) {
         const state = this.getState(reducerName);
 
+        // Logger
         console.error('current state', state);
 
         const nextValue = reducerMethod(state, payload);
@@ -74,4 +76,3 @@ export default class Store {
     };
   }
 }
-

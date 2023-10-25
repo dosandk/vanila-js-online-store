@@ -1,16 +1,13 @@
-import BaseComponent from '../base-component.js';
-import connectToObserver from '../../core/observer/connect.js';
-import connectToStore from '../../core/store/connect.js';
-import {
-  addProduct,
-  removeProduct
-} from '../../reducers/products.js';
+import BaseComponent from "../base-component.js";
+import connectToObserver from "../../core/observer/connect.js";
+import connectToStore from "../../core/store/connect.js";
+import { addProduct, removeProduct } from "../../reducers/products.js";
 import {
   addToWishList as addToWishListAction,
-  removeFromWishList
-} from '../../reducers/wishlist.js';
+  removeFromWishList,
+} from "../../reducers/wishlist.js";
 
-import './card.css';
+import "./card.css";
 
 class Card extends BaseComponent {
   subElements = {};
@@ -24,19 +21,21 @@ class Card extends BaseComponent {
 
     const { products, wishlist } = this.store.getState();
 
-    this.cartProducts = products.map(product => product.id);
-    this.wishlist = wishlist.map(product => product.id);
+    this.cartProducts = products.map((product) => product.id);
+    this.wishlist = wishlist.map((product) => product.id);
 
     this.render();
     this.initEventListeners();
   }
 
   get template() {
-    const {images, rating, price, title, description} = this.product;
+    const { images, rating, price, title, description } = this.product;
 
     return `
       <div class="os-product-card">
-        <div class="os-product-img" style="background-image: url(${images[0].url});"></div>
+        <div class="os-product-img" style="background-image: url(${
+          images[0].url
+        });"></div>
 
         <div class="os-product-content">
           <div class="os-product-price-wrapper">
@@ -49,7 +48,9 @@ class Card extends BaseComponent {
           </div>
 
           <h5 class="os-product-title">${title}</h5>
-          <p class="os-product-description">${description.slice(0, 50) + '...'}</p>
+          <p class="os-product-description">${
+            description.slice(0, 50) + "..."
+          }</p>
         </div>
         ${this.footer}
       </div>
@@ -58,13 +59,17 @@ class Card extends BaseComponent {
 
   get footer() {
     return `<footer class="os-product-footer">
-      <button class="os-btn-default add-to-wishlist-btn ${this.isActive(this.wishlist)}" data-element="addToWishlist">
+      <button class="os-btn-default add-to-wishlist-btn ${this.isActive(
+        this.wishlist,
+      )}" data-element="addToWishlist">
         <i class="bi bi-heart"></i>
         <i class="bi bi-heart-fill"></i>
         Wishlist
       </button>
       <div class="btns-separator"></div>
-      <button class="os-btn-default add-to-cart-btn ${this.isActive(this.cartProducts)}" data-element="addToCart">
+      <button class="os-btn-default add-to-cart-btn ${this.isActive(
+        this.cartProducts,
+      )}" data-element="addToCart">
         <i class="bi bi-cart"></i>
         <i class="bi bi-cart-check-fill"></i>
         Cart
@@ -72,64 +77,64 @@ class Card extends BaseComponent {
     </footer>`;
   }
 
-  isActive (selected) {
-    return selected.includes(this.product.id) ? 'active' : '';
+  isActive(selected) {
+    return selected.includes(this.product.id) ? "active" : "";
   }
 
   initEventListeners() {
-    const {addToWishlist, addToCart} = this.subElements;
+    const { addToWishlist, addToCart } = this.subElements;
 
-    addToWishlist.addEventListener('pointerdown', event => {
-      const status = event.currentTarget.classList.toggle('active');
+    addToWishlist.addEventListener("pointerdown", (event) => {
+      const status = event.currentTarget.classList.toggle("active");
 
-      this.dispatchEvent('add-to-wishlist', {
+      this.dispatchEvent("add-to-wishlist", {
         product: this.product,
-        status
+        status,
       });
 
       if (status) {
-        this.addProduct('wishList');
+        this.addProduct("wishList");
       } else {
-        this.removeProduct('wishList');
+        this.removeProduct("wishList");
       }
     });
 
-    addToCart.addEventListener('pointerdown', event => {
-      const status = event.currentTarget.classList.toggle('active');
+    addToCart.addEventListener("pointerdown", (event) => {
+      const status = event.currentTarget.classList.toggle("active");
 
-      this.dispatchEvent('add-to-cart', {
+      this.dispatchEvent("add-to-cart", {
         product: this.product,
-        status
+        status,
       });
 
       if (status) {
-        this.addProduct('cartList');
+        this.addProduct("cartList");
       } else {
-        this.removeProduct('cartList');
+        this.removeProduct("cartList");
       }
     });
   }
 
-  addProduct (actionName = '') {
+  addProduct(actionName = "") {
     const actions = {
       wishList: addToWishListAction,
-      cartList: addProduct
+      cartList: addProduct,
     };
 
     this.store.dispatch(actions[actionName](this.product));
   }
 
-  removeProduct (actionName = '') {
+  removeProduct(actionName = "") {
     const actions = {
       wishList: removeFromWishList,
-      cartList: removeProduct
+      cartList: removeProduct,
     };
 
     this.store.dispatch(actions[actionName](this.product));
   }
 
-  dispatchEvent(type = '', payload = {}) {
-    this.observer.dispatchEvent({type, payload});
+  dispatchEvent(type = "", payload = {}) {
+    this.observer.dispatchEvent({ type, payload });
   }
 
   update(product = {}) {

@@ -6,7 +6,7 @@ export default class NotificationManager {
   notificationsList = [];
 
   // NOTE: Pattern: Singleton
-  constructor ({ stackLimit = 3} = {}) {
+  constructor ({ stackLimit = 3 } = {}) {
     if (NotificationManager.instance) {
       return NotificationManager.instance;
     }
