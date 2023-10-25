@@ -6,8 +6,4 @@
 npm install
 ```
 
-## List of GoF design patterns
-
-- Singleton
-- Adapter
-- Facade
+...
